@@ -40,10 +40,10 @@ exports.category = async function (req, res) {
         if(products[i]) productToShow.push(products[i])
     }
 
-    res.render('../components/products/category.hbs', {productToShow, length, pageBar, previous, next})
+    res.render('products/views/category.hbs', {productToShow, length, pageBar, previous, next})
 }
 
 exports.getProductById = async function (req, res) {
     const product = await productService.productByID(req.params.productId)
-    res.render('../components/products/detail.hbs', {product})
+    res.render('products/views/detail.hbs', {product})
 }
