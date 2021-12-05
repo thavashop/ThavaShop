@@ -11,8 +11,8 @@ passport.use(new LocalStrategy(
                 message: 'Incorrect username.'
             });
         }
-
-        if (!userService.validPassword(password, user)) {
+        const isValid = await userService.validPassword(password, user);
+        if (!isValid) {
             return done(null, false, {
                 message: 'Incorrect password.'
             });
