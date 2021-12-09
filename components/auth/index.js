@@ -16,7 +16,6 @@ router.post('/register', authController.register);
 
 
 router.get('/account', loggedInUserGuard, (req, res) => {
-    console.log(req.user);
     res.render('auth/views/account')
 });
 router.post('/account', authController.editAccount)
