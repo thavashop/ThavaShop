@@ -24,19 +24,19 @@
                                 <div class="col-md-6 col-lg-3">
                                     <div class="form-group">
                                         <label for="firstname">Firstname</label>
-                                        <input id="firstname" type="text" class="form-control" value="{{user.firstname}}">
+                                        <input id="firstname" type="text" class="form-control" value="{{user.firstname}}" name="firstname">
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-3">
                                     <div class="form-group">
                                         <label for="lastname">Lastname</label>
-                                        <input id="lastname" type="text" class="form-control" value="{{user.lastname}}">
+                                        <input id="lastname" type="text" class="form-control" value="{{user.lastname}}" name="lastname">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="company">Birthday</label>
-                                        <input id="company" type="text" class="form-control" value="{{user.birthday}}">
+                                        <input id="company" type="text" class="form-control" value="{{user.birthday}}" name="birthday">
                                     </div>
                                 </div>
                             </div>
@@ -69,13 +69,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="phone">Telephone</label>
-                                        <input id="phone" type="text" class="form-control" value="{{user.phone}}">
+                                        <input id="phone" type="text" class="form-control" value="{{user.phone}}" name="phone">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input id="email" type="text" class="form-control" value="{{user.email}}">
+                                        <input id="email" type="text" class="form-control" value="{{user.email}}" name="email">
                                     </div>
                                 </div>
                                 <div class="col-md-12 text-center">
@@ -84,6 +84,7 @@
                                 </div>
                             </div>
                         </form>
+                        {{!-- {{> notifications}} --}}
                         <h3 class="mt-5">Change password</h3>
                         <form>
                             <div class="row">

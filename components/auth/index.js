@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const authController = require('./authController')
+const loggedInUserGuard = require('../../middlewares/loggedInUserGuard')
 const passport = require('../../passport')
 
 
@@ -12,5 +13,12 @@ router.post('/login', passport.authenticate('local', {
 
 router.get('/logout', authController.logout);
 router.post('/register', authController.register);
+
+
+router.get('/account', loggedInUserGuard, (req, res) => {
+    console.log(req.user);
+    res.render('auth/views/account')
+});
+router.post('/account', authController.editAccount)
 
 module.exports = router;

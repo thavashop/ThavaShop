@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 // const OrderDetails = require('../models/OrderDetails') // Tested ok!
 // const Order = require('../models/Order') // Tested ok!
 const Product = require('../models/Product') // Tested ok!
-const loggedInUserGuard = require('../middlewares/loggedInUserGuard')
+// const loggedInUserGuard = require('../middlewares/loggedInUserGuard')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -36,8 +36,5 @@ router.get('/text', function(req, res, next) {
   res.render('text');  
 });
 
-router.get('/account', loggedInUserGuard, function(req, res, next) {
-  res.render('account');  
-});
 
 module.exports = router;

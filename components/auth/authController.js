@@ -17,3 +17,23 @@ exports.register = async (req, res) => {
     const user = await userService.register(username, email, password);
     res.redirect('/login')
 }
+
+exports.editAccount = async (req, res) => {
+    let user
+    try {
+        const body = req.body
+        user = await userService.findById(req.params.id)
+        with (user) {
+            firstname = body.firstname
+            lastname = body.lastname
+            birthday = body.birthday
+            email = body.email
+            phone = body.phone
+        }
+        req.flash('success', 'Account editted')
+        res.redirect('/account')
+    } catch (err) {
+        console.log(err);
+        req.flash('error', 'Account edit failed')
+    }
+}
