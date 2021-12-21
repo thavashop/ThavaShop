@@ -47,3 +47,12 @@ exports.getProductById = async function (req, res) {
     const product = await productService.productByID(req.params.productId)
     res.render('products/views/detail.hbs', {product})
 }
+
+exports.getProductBySlug = async function (req, res) {
+    const product = await productService.productBySlug(req.params.slug)
+    res.render('products/views/detail.hbs', {product})
+}
+
+exports.getSort = function (req, res) {
+    console.log(req.body.sort)
+}
