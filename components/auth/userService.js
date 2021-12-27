@@ -5,6 +5,8 @@ exports.findByUsername = (username) => userModel.findOne({
     username: username
 }).lean();
 
+exports.findById = (id) => userModel.findById(id);
+
 exports.validPassword = (password, user) => {
     return bcrypt.compare(password, user.password);
 }

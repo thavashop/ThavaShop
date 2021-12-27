@@ -22,7 +22,7 @@ exports.editAccount = async (req, res) => {
     let user
     try {
         const body = req.body
-        user = await userService.findById(req.params.id)
+        user = await userService.findById(res.locals.user._id)
         with (user) {
             firstname = body.firstname
             lastname = body.lastname
@@ -30,10 +30,11 @@ exports.editAccount = async (req, res) => {
             email = body.email
             phone = body.phone
         }
-        req.flash('success', 'Account editted')
-        res.redirect('/account')
+        await user.save();
+        // req.flash('success', 'Account editted')
+        res.redirect('/')
     } catch (err) {
         console.log(err);
-        req.flash('error', 'Account edit failed')
+        // req.flash('error', 'Account edit failed')
     }
 }
