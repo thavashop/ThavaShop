@@ -15,7 +15,7 @@ exports.logout = (req, res) => {
 exports.register = async (req, res) => {
     const { username, email, password } = req.body;
     const user = await userService.register(username, email, password);
-    res.redirect('/login')
+    res.redirect('/login?register-successfully')
 }
 
 exports.editAccount = async (req, res) => {
@@ -36,5 +36,20 @@ exports.editAccount = async (req, res) => {
     } catch (err) {
         console.log(err);
         // req.flash('error', 'Account edit failed')
+    }
+}
+
+exports.activate = async (req, res) => {
+    const { email } = req.query;
+    const activationString = req.query['activation-string'];
+    const result = await userService.activate(email, activationString)
+    if (result) {
+        const user = await userService.findByEmail(email)
+        req.login(user, function (err) {
+            if (err) return next(err);
+            return res.redirect('/')
+        })
+    } else {
+        return res.redirect('/')
     }
 }
