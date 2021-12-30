@@ -3,7 +3,7 @@ const cartService = require("./cartService");
 const productService = require("../products/productService");
 
 exports.getCart = async (req, res) => {
-  const customer = req.locals?.user._id;
+  const customer = res.locals?.user;
   if (!customer) {
     //get cart from cookie
     const cart = req.cookies?.cart;
@@ -46,7 +46,17 @@ exports.getCart = async (req, res) => {
       });
     }
   } else {
-    const { products } = await cartService.getCart(req.locals?.user._id);
+    const cart = await cartService.getCart(res.locals?.user._id);
+
+    if (!cart) {
+      return res.render("cart/views/cart.hbs", {
+        products: [],
+        total: 0,
+        itemsInCart: 0,
+      });
+    }
+
+    const { products } = cart;
     const itemsInCart = products.length;
     const total = products.reduce((acc, product) => {
       return acc + product.productId.price * product.quantity;
@@ -65,16 +75,16 @@ exports.addToCart = async (req, res) => {
   let { quantity } = req.body;
   //if user is logged in
   // await cartService.addOrUpdateCart(
-  //   new ObjectId("61acf26071c71a7a9ed10f2e"),
+  //   new ObjectId("61c56ed37f4ad551a3907197"),
   //   productId,
   //   quantity ?? 1
   // );
   //cast quantity to number
   quantity = Number(quantity ?? 1);
 
-  if (req.locals?.user) {
+  if (res.locals?.user) {
     await cartService.addOrUpdateCart(
-      req.locals.user._id,
+      res.locals.user._id,
       productId,
       quantity ?? 1
     );
@@ -121,8 +131,8 @@ exports.removeFromCart = async (req, res) => {
   //   productId
   // );
 
-  if (req.locals?.user) {
-    await cartService.removeFromCart(req.locals.user._id, productId);
+  if (res.locals?.user) {
+    await cartService.removeFromCart(res.locals.user._id, productId);
   }
 
   const cart = req.cookies?.cart.filter(
