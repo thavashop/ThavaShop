@@ -7,8 +7,8 @@ exports.filter = function (sortBy, brand, color) {
       brand: { $in: brand },
       color: { $in: color },
     })
-    .sort({ [sortBy]: 1 })
-    .lean();
+      .sort({ [sortBy]: 1 })
+      .lean();
   }
 
   //filter by brand
@@ -16,8 +16,8 @@ exports.filter = function (sortBy, brand, color) {
     return Product.find({
       brand: { $in: brand },
     })
-    .sort({ [sortBy]: 1 })
-    .lean();
+      .sort({ [sortBy]: 1 })
+      .lean();
   }
 
   //filter by color
@@ -25,8 +25,8 @@ exports.filter = function (sortBy, brand, color) {
     return Product.find({
       color: { $in: color },
     })
-    .sort({ [sortBy]: 1 })
-    .lean();
+      .sort({ [sortBy]: 1 })
+      .lean();
   }
 
   return Product.find({})
@@ -34,7 +34,9 @@ exports.filter = function (sortBy, brand, color) {
     .lean();
 };
 
-exports.list = () => Product.find({});
+exports.list = () => Product.find({}).lean();
+
+exports.getProductsByIds = (ids) => Product.find({ _id: { $in: ids } }).lean();
 
 exports.productByID = (id) => Product.findOne({ _id: id }).lean();
 
@@ -45,4 +47,4 @@ exports.findByPage = (page, itemPerPage) =>
     .skip(page * itemPerPage)
     .limit(itemPerPage);
 
-exports.productBySlug = (slug) => Product.findOne({ slug: slug })
+exports.productBySlug = (slug) => Product.findOne({ slug: slug }).lean();
