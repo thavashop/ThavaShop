@@ -39,24 +39,14 @@ exports.register = async (req, res) => {
 }
 
 exports.editAccount = async (req, res) => {
-    let user
     try {
-        const body = req.body
-        user = await userService.findById(res.locals.user._id)
-        with(user) {
-            firstname = body.firstname
-            lastname = body.lastname
-            birthday = body.birthday
-            email = body.email
-            phone = body.phone
-        }
-        await user.save();
-        // req.flash('success', 'Account editted')
-        res.redirect('/')
+        req.session.passport.user = await userService.edit(res.locals.user._id, req.body)
+        req.flash('success', 'Account editted')
     } catch (err) {
-        console.log(err);
-        // req.flash('error', 'Account edit failed')
+        console.log(err)
+        req.flash('error', 'Account edit failed')
     }
+    res.redirect('/account')
 }
 
 exports.activate = async (req, res) => {
@@ -74,4 +64,21 @@ exports.activate = async (req, res) => {
     } else {
         return res.redirect('/')
     }
+}
+
+exports.changePassword = async (req, res) => {
+    try {
+        const {password0, password1, password2} = req.body
+        if (await userService.validPassword(password0, req.user)) {
+            if (password1 === password2) {
+                req.session.passport.user = await userService.changePassword(req.user._id, password1)
+                req.flash('success','Password changed successfully')
+            }
+            else req.flash('error', 'Incorrect password confirmation')
+        }
+        else req.flash('error', 'Incorrect old password')
+    } catch (error) {
+        console.log(error);
+    }
+    res.redirect('/account')
 }

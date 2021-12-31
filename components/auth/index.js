@@ -19,6 +19,7 @@ router.get('/account', loggedInUserGuard, (req, res) => {
     res.render('auth/views/account')
 });
 router.post('/account', authController.editAccount)
+router.post('/account/password', authController.changePassword)
 
 router.get('/activate', authController.activate)
 
