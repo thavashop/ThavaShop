@@ -24,7 +24,7 @@ exports.category = async function (req, res) {
     brands: [...new Set(allProducts.map((product) => product.brand))],
   };
   // page bar
-  const pageIndex = Math.floor(page / 5) * 5 + 1;
+  const pageIndex = Math.floor((page-1) / 5) * 5 + 1;
   var pageBar = [];
   for (var i = pageIndex; i < pageIndex + 5; i++) {
     var item = {
@@ -50,7 +50,7 @@ exports.category = async function (req, res) {
   };
 
   if (pageIndex == 1) previous.isHas = false;
-  if (!products[(pageIndex + 5) * 6]) next.isHas = false;
+  if (!products[(pageIndex + 4) * 6 + 1]) next.isHas = false;
 
   // product
   const productToShow = [];
@@ -76,13 +76,61 @@ exports.getProductById = async function (req, res) {
 };
 
 
-exports.getProductBySlug = async function (req, res) {
+exports.renderDetail = async function (req, res) {
   const product = await productService.productBySlug(req.params.slug)
   const comments = await productService.getProductComment(product._id)
   comments.sort((a, b) => (new Date(b.createAt) - new Date(a.createAt)));
+
+  const size = comments.length;
+
+
+  var {
+    pageComment: page
+  } = req.query;
+  if (!page) page = 1;
+
+  // page bar
+  const pageIndex = Math.floor((page-1) / 5) * 5 + 1;
+  var pageBar = [];
+  for (var i = pageIndex; i < pageIndex + 5; i++) {
+    var item = {
+      page: i,
+      active: "",
+    };
+    if (i == page) item.active = "active";
+
+    if (comments[(i - 1) * 6]) {
+      pageBar.push(item);
+    }
+  } // show 5 pages each time
+
+  var previous = {
+    isHas: true,
+    page: pageIndex - 1,
+  };
+
+  var next = {
+    isHas: true,
+    page: pageIndex + 5,
+  };
+
+  if (pageIndex == 1) previous.isHas = false;
+  if (!comments[(pageIndex + 4) * 6]) next.isHas = false;
+
+  // product
+  const commentsToShow = [];
+  for (var i = (page - 1) * 6; i < page * 6; i++) {
+    if (comments[i]) commentsToShow.push(comments[i]);
+  }
+
   res.render('products/views/detail.hbs', {
     product,
-    comments,
+    commentsToShow,
+    size,
+    pageBar,
+    previous,
+    page,
+    next,
   })
 }
 

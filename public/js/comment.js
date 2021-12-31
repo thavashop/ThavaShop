@@ -6,10 +6,13 @@ $('#comment-form button').on('click', function (e) {
             productId: $("#product-id").val(),
             name: $("#name").val(),
         }, function (data) {
-            const commentTemplate = Handlebars.compile(
-                document.getElementById("comment-template").innerHTML);
-            const commentHtml = commentTemplate(data);
-            $("#comment-list").prepend(commentHtml);
+            if ($("#comment-page").val() == 1) {
+                const commentTemplate = Handlebars.compile(
+                    document.getElementById("comment-template").innerHTML);
+                const commentHtml = commentTemplate(data);
+                $("#comment-list").prepend(commentHtml);
+                $("#comment-list").children().last().remove();
+            }
             $("#comment-content")[0].value = '';
             let numberComment = $("#comments-size")[0].innerHTML;
             let words = numberComment.split(" ");

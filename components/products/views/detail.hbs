@@ -196,7 +196,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="name">Name <span class="required">*</span></label>
-                    <input id="name" type="text" class="form-control" name="name">
+                    <input id="name" type="text" class="form-control" name="name" required>
                   </div>
                 </div>
               </div>
@@ -210,7 +210,8 @@
                     {{/if}}
                     <input id="product-id" type="hidden" name="productId" value="{{product._id}}">
                     <input type="hidden" name="slug" value="{{product.slug}}">
-                    <input id="comment-content" type="text" class="form-control" id="comment" rows="4" name="content">
+                    <input id="comment-page" type="hidden" name="page" value="{{page}}">
+                    <input id="comment-content" type="text" class="form-control" id="comment" rows="4" name="content" required>
                   </div>
                 </div>
               </div>
@@ -223,9 +224,9 @@
           </div>
           <!-- /#comment-form-->
           <div id="comments" class="box">
-            <h4 id="comments-size">{{comments.length}} comments</h4>
+            <h4 id="comments-size">{{size}} comments</h4>
             <div id="comment-list">
-              {{#each comments}}
+              {{#each commentsToShow}}
               <div class="row comment">
                 <div class="col-md-3 col-lg-2 text-center text-md-center">
                   <p><img src="/img/blog-avatar2.jpg" alt="" class="img-fluid rounded-circle"></p>
@@ -237,11 +238,36 @@
                   <p class="reply"><a href="#submit-comment"><i class="fa fa-reply"></i> Reply</a></p>
                 </div>
               </div>
-              <!-- /.comment-->
               {{/each}}
             </div>
           </div>
           <!-- /#comments-->
+          <div class="pages">
+            {{!-- <p class="loadMore"><a href="#" class="btn btn-primary btn-lg"><i class="fa fa-chevron-down"></i> Load
+                more</a></p> --}}
+            <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+              <ul class="pagination">
+                  {{#if previous.isHas}}
+                  <li class="page-item"><a href="/category/product/{{product.slug}}?pageComment={{previous.page}}" aria-label="Previous"
+                      class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                  {{/if}}
+                  {{#each pageBar}}
+                  <li class="page-item {{active}}">
+                    <a href="/category/product/{{../product.slug}}?pageComment={{page}}" class="page-link">{{page}}</a>
+                  </li>
+                  {{/each}}
+                  {{!-- <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                  <li class="page-item"><a href="#" class="page-link">2</a></li>
+                  <li class="page-item"><a href="#" class="page-link">3</a></li>
+                  <li class="page-item"><a href="#" class="page-link">4</a></li>
+                  <li class="page-item"><a href="#" class="page-link">5</a></li> --}}
+                  {{#if next.isHas}}
+                  <li class="page-item"><a href="/category/product/{{product.slug}}?pageComment={{next.page}}" aria-label="Next" class="page-link"><span
+                        aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                  {{/if}}
+              </ul>
+            </nav>
+          </div>
         </div>
         <!-- /.col-md-9-->
       </div>

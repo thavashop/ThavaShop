@@ -5,7 +5,7 @@ const productController = require('./productController')
 
 router.get('/', productController.category);
 router.get('/category?page=', productController.category);
-router.get('/product/:slug', productController.getProductBySlug);
+router.get('/product/:slug', productController.renderDetail);
 
 router.post('/post-comment', productController.postComment);
 
