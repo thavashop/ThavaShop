@@ -79,6 +79,8 @@ exports.postComment = (name, productId, content) => {
     name: name,
     productId: productId,
     content: content,
-    creatAt: new Date(),
+    createAt: new Date(),
   }).save();
 }
+
+exports.getProductComment = (productId) => Comment.find({productId: productId}).lean();

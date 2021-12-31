@@ -190,7 +190,7 @@
           <!-- /#post-content-->
           <div id="comment-form" class="box">
             <h4>Leave comment</h4>
-            <form method="post" action="/post-comment">
+            <form method="post" action="/category/post-comment">
               {{#unless user}}
               <div class="row">
                 <div class="col-md-6">
@@ -202,13 +202,14 @@
               </div>
               {{/unless}}
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" id="submit-comment">
                   <div class="form-group">
                     <label for="comment">Comment <span class="required">*</span></label>
                     {{#if user}}
                     <input type="hidden" name="name" value="{{user.username}}">
                     {{/if}}
                     <input type="hidden" name="productId" value="{{product._id}}">
+                    <input type="hidden" name="slug" value="{{product.slug}}">
                     <input type="text" class="form-control" id="comment" rows="4" name="content">
                   </div>
                 </div>
@@ -222,35 +223,21 @@
           </div>
           <!-- /#comment-form-->
           <div id="comments" class="box">
-            <h4>2 comments</h4>
+            <h4>{{comments.length}} comments</h4>
+            {{#each comments}}
             <div class="row comment">
               <div class="col-md-3 col-lg-2 text-center text-md-center">
-                <p><img src="img/blog-avatar2.jpg" alt="" class="img-fluid rounded-circle"></p>
+                <p><img src="/img/blog-avatar2.jpg" alt="" class="img-fluid rounded-circle"></p>
               </div>
               <div class="col-md-9 col-lg-10">
-                <h5>Julie Alma</h5>
-                <p class="posted"><i class="fa fa-clock-o"></i> September 23, 2011 at 12:00 am</p>
-                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                  Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet
-                  quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-                <p class="reply"><a href="#"><i class="fa fa-reply"></i> Reply</a></p>
+                <h5>{{name}}</h5>
+                <p class="posted"><i class="fa fa-clock-o"></i> {{createAt}}</p>
+                <p>{{content}}</p>
+                <p class="reply"><a href="#submit-comment"><i class="fa fa-reply"></i> Reply</a></p>
               </div>
             </div>
             <!-- /.comment-->
-            <div class="row comment last">
-              <div class="col-md-3 col-lg-2 text-center text-md-center">
-                <p><img src="img/blog-avatar.jpg" alt="" class="img-fluid rounded-circle"></p>
-              </div>
-              <div class="col-md-9 col-lg-10">
-                <h5>Louise Armero</h5>
-                <p class="posted"><i class="fa fa-clock-o"></i> September 23, 2012 at 12:00 am</p>
-                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                  Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet
-                  quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-                <p class="reply"><a href="#"><i class="fa fa-reply"></i> Reply</a></p>
-              </div>
-            </div>
-            <!-- /.comment-->
+            {{/each}}
           </div>
           <!-- /#comments-->
         </div>

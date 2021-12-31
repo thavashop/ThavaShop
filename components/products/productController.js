@@ -78,11 +78,15 @@ exports.getProductById = async function (req, res) {
 
 exports.getProductBySlug = async function (req, res) {
   const product = await productService.productBySlug(req.params.slug)
+  const comments = await productService.getProductComment(product._id)
+  comments.sort((a, b) => (new Date(b.createAt) - new Date(a.createAt)));
   res.render('products/views/detail.hbs', {
-    product
+    product,
+    comments,
   })
 }
 
 exports.postComment = async (req, res, next) => {
   const comment = await productService.postComment(req.body.name, req.body.productId, req.body.content);
+  res.redirect(`/category/product/${req.body.slug}`)
 }
