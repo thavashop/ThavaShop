@@ -190,7 +190,7 @@
           <!-- /#post-content-->
           <div id="comment-form" class="box">
             <h4>Leave comment</h4>
-            <form method="post" action="/category/post-comment">
+            <form method="post" action="/category/post-comment" id="comment-form">
               {{#unless user}}
               <div class="row">
                 <div class="col-md-6">
@@ -206,11 +206,11 @@
                   <div class="form-group">
                     <label for="comment">Comment <span class="required">*</span></label>
                     {{#if user}}
-                    <input type="hidden" name="name" value="{{user.username}}">
+                    <input id="name" type="hidden" name="name" value="{{user.username}}">
                     {{/if}}
-                    <input type="hidden" name="productId" value="{{product._id}}">
+                    <input id="product-id" type="hidden" name="productId" value="{{product._id}}">
                     <input type="hidden" name="slug" value="{{product.slug}}">
-                    <input type="text" class="form-control" id="comment" rows="4" name="content">
+                    <input id="comment-content" type="text" class="form-control" id="comment" rows="4" name="content">
                   </div>
                 </div>
               </div>
@@ -224,20 +224,22 @@
           <!-- /#comment-form-->
           <div id="comments" class="box">
             <h4>{{comments.length}} comments</h4>
-            {{#each comments}}
-            <div class="row comment">
-              <div class="col-md-3 col-lg-2 text-center text-md-center">
-                <p><img src="/img/blog-avatar2.jpg" alt="" class="img-fluid rounded-circle"></p>
+            <div id="comment-list">
+              {{#each comments}}
+              <div class="row comment">
+                <div class="col-md-3 col-lg-2 text-center text-md-center">
+                  <p><img src="/img/blog-avatar2.jpg" alt="" class="img-fluid rounded-circle"></p>
+                </div>
+                <div class="col-md-9 col-lg-10">
+                  <h5>{{name}}</h5>
+                  <p class="posted"><i class="fa fa-clock-o"></i> {{createAt}}</p>
+                  <p>{{content}}</p>
+                  <p class="reply"><a href="#submit-comment"><i class="fa fa-reply"></i> Reply</a></p>
+                </div>
               </div>
-              <div class="col-md-9 col-lg-10">
-                <h5>{{name}}</h5>
-                <p class="posted"><i class="fa fa-clock-o"></i> {{createAt}}</p>
-                <p>{{content}}</p>
-                <p class="reply"><a href="#submit-comment"><i class="fa fa-reply"></i> Reply</a></p>
-              </div>
+              <!-- /.comment-->
+              {{/each}}
             </div>
-            <!-- /.comment-->
-            {{/each}}
           </div>
           <!-- /#comments-->
         </div>
@@ -246,3 +248,18 @@
     </div>
   </div>
 </div>
+
+<script id="comment-template" type="text/x-handlebars">
+  <div class="row comment">
+    <div class="col-md-3 col-lg-2 text-center text-md-center">
+      <p><img src="/img/blog-avatar2.jpg" alt="" class="img-fluid rounded-circle"></p>
+    </div>
+    <div class="col-md-9 col-lg-10">
+      <h5>\{{name}}</h5>
+      <p class="posted"><i class="fa fa-clock-o"></i> \{{createAt}}</p>
+      <p>\{{content}}</p>
+      <p class="reply"><a href="#submit-comment"><i class="fa fa-reply"></i> Reply</a></p>
+    </div>
+  </div>
+  <!-- /.comment-->
+</script>

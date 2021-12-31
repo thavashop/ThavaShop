@@ -88,5 +88,5 @@ exports.getProductBySlug = async function (req, res) {
 
 exports.postComment = async (req, res, next) => {
   const comment = await productService.postComment(req.body.name, req.body.productId, req.body.content);
-  res.redirect(`/category/product/${req.body.slug}#submit-comment`)
+  res.status(200).json(comment);
 }
