@@ -67,3 +67,20 @@ exports.activate = async (email, activationString) => {
     });
     return true;
 }
+
+exports.edit = async (id, changes) => {    
+    try {
+        return await userModel.findOneAndUpdate({_id: id}, changes, {new: true}).lean()      
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.changePassword = async (id, password) => {
+    try {
+        const newPassword = await bcrypt.hash(password, 10)
+        return await userModel.findOneAndUpdate({_id: id}, {$set: {password: newPassword}}, {new: true}).lean()        
+    } catch (error) {
+        console.log(error);
+    }
+}

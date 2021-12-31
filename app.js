@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
 const expressHbs = require("express-handlebars");
+const flash = require('express-flash');
 
 const indexRouter = require("./routes/index");
 const authRouter = require("./components/auth");
@@ -20,6 +21,7 @@ const hbs = expressHbs.create({
   defaultLayout: path.join(__dirname, "views/layout"),
   extname: ".hbs",
   helpers: require("./utils/handlebars").helpers,
+  partialsDir: './views/partials'
 });
 
 app.engine("hbs", hbs.engine);
@@ -34,6 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(flash());
 
 // passport
 app.use(session({ secret: process.env.SESSION_SECRET }));
@@ -61,6 +64,9 @@ app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
+
+  // log stacks
+  console.log(err.stack);
 
   // render the error page
   res.status(err.status || 500);

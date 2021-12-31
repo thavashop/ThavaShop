@@ -1,0 +1,11 @@
+{{!-- Notification --}}
+{{#with messages}}
+    {{#if error}}
+        {{!-- <div class="alert alert-danger">{{error}}</div> --}}
+        <div style="color: red;">{{error}}</div><br>
+    {{/if}}
+    {{#if success}}
+        {{!-- <div class="alert alert-success">{{success}}</div> --}}
+        <div style="color: green;">{{success}}</div><br>
+    {{/if}}
+{{/with}}
