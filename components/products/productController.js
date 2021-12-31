@@ -1,7 +1,12 @@
 const productService = require("./productService");
 
 exports.category = async function (req, res) {
-  var { page, sortBy, brand, color } = req.query;
+  var {
+    page,
+    sortBy,
+    brand,
+    color
+  } = req.query;
   if (!page) page = 1;
 
   const products = await productService.filter(
@@ -65,11 +70,19 @@ exports.category = async function (req, res) {
 
 exports.getProductById = async function (req, res) {
   const product = await productService.productByID(req.params.productId);
-  res.render("products/views/detail.hbs", { product });
+  res.render("products/views/detail.hbs", {
+    product
+  })
 };
 
 
 exports.getProductBySlug = async function (req, res) {
-    const product = await productService.productBySlug(req.params.slug)
-    res.render('products/views/detail.hbs', {product})
+  const product = await productService.productBySlug(req.params.slug)
+  res.render('products/views/detail.hbs', {
+    product
+  })
+}
+
+exports.postComment = async (req, res, next) => {
+  const comment = await productService.postComment(req.body.name, req.body.productId, req.body.content);
 }

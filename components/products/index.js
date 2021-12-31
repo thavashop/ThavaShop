@@ -7,5 +7,6 @@ router.get('/', productController.category);
 router.get('/category?page=', productController.category);
 router.get('/product/:slug', productController.getProductBySlug);
 
+router.post('/post-comment', productController.postComment);
 
 module.exports = router;
