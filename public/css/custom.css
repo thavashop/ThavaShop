@@ -11,3 +11,7 @@
     margin-left: 10px;
     color: rgb(79, 191, 168);
 }
+
+#navigation .nav-link{
+    color: white;
+}

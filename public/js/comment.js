@@ -11,7 +11,9 @@ $('#comment-form button').on('click', function (e) {
                     document.getElementById("comment-template").innerHTML);
                 const commentHtml = commentTemplate(data);
                 $("#comment-list").prepend(commentHtml);
-                $("#comment-list").children().last().remove();
+                if ($("#comment-list").children().length > 6) {
+                    $("#comment-list").children().last().remove();
+                }
             }
             $("#comment-content")[0].value = '';
             let numberComment = $("#comments-size")[0].innerHTML;

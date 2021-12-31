@@ -1,7 +1,7 @@
 const productService = require("./productService");
 
 exports.category = async function (req, res) {
-  var {
+  let {
     page,
     sortBy,
     brand,
@@ -25,9 +25,9 @@ exports.category = async function (req, res) {
   };
   // page bar
   const pageIndex = Math.floor((page-1) / 5) * 5 + 1;
-  var pageBar = [];
-  for (var i = pageIndex; i < pageIndex + 5; i++) {
-    var item = {
+  let pageBar = [];
+  for (let i = pageIndex; i < pageIndex + 5; i++) {
+    let item = {
       page: i,
       active: "",
       params: req.query,
@@ -39,12 +39,12 @@ exports.category = async function (req, res) {
     }
   } // show 5 pages each time
 
-  var previous = {
+  let previous = {
     isHas: true,
     page: pageIndex - 1,
   };
 
-  var next = {
+  let next = {
     isHas: true,
     page: pageIndex + 5,
   };
@@ -54,7 +54,7 @@ exports.category = async function (req, res) {
 
   // product
   const productToShow = [];
-  for (var i = (page - 1) * 6; i < page * 6; i++) {
+  for (let i = (page - 1) * 6; i < page * 6; i++) {
     if (products[i]) productToShow.push(products[i]);
   }
 
@@ -84,16 +84,16 @@ exports.renderDetail = async function (req, res) {
   const size = comments.length;
 
 
-  var {
+  let {
     pageComment: page
   } = req.query;
   if (!page) page = 1;
 
   // page bar
   const pageIndex = Math.floor((page-1) / 5) * 5 + 1;
-  var pageBar = [];
-  for (var i = pageIndex; i < pageIndex + 5; i++) {
-    var item = {
+  let pageBar = [];
+  for (let i = pageIndex; i < pageIndex + 5; i++) {
+    let item = {
       page: i,
       active: "",
     };
@@ -104,12 +104,12 @@ exports.renderDetail = async function (req, res) {
     }
   } // show 5 pages each time
 
-  var previous = {
+  let previous = {
     isHas: true,
     page: pageIndex - 1,
   };
 
-  var next = {
+  let next = {
     isHas: true,
     page: pageIndex + 5,
   };
@@ -119,7 +119,7 @@ exports.renderDetail = async function (req, res) {
 
   // product
   const commentsToShow = [];
-  for (var i = (page - 1) * 6; i < page * 6; i++) {
+  for (let i = (page - 1) * 6; i < page * 6; i++) {
     if (comments[i]) commentsToShow.push(comments[i]);
   }
 
