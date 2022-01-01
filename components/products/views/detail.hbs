@@ -209,7 +209,7 @@
                     <input id="name" type="hidden" name="name" value="{{user.username}}">
                     {{/if}}
                     <input id="product-id" type="hidden" name="productId" value="{{product._id}}">
-                    <input type="hidden" name="slug" value="{{product.slug}}">
+                    <input id="slug" type="hidden" name="slug" value="{{product.slug}}">
                     <input id="comment-page" type="hidden" name="page" value="{{page}}">
                     <input id="comment-content" type="text" class="form-control" id="comment" rows="4" name="content" required>
                   </div>
@@ -233,7 +233,7 @@
                 </div>
                 <div class="col-md-9 col-lg-10">
                   <h5>{{name}}</h5>
-                  <p class="posted"><i class="fa fa-clock-o"></i> {{createAt}}</p>
+                  <p class="posted"><i class="fa fa-clock-o"></i> {{createAt}} ago</p>
                   <p>{{content}}</p>
                   <p class="reply"><a href="#submit-comment"><i class="fa fa-reply"></i> Reply</a></p>
                 </div>
@@ -282,10 +282,14 @@
     </div>
     <div class="col-md-9 col-lg-10">
       <h5>\{{name}}</h5>
-      <p class="posted"><i class="fa fa-clock-o"></i> \{{createAt}}</p>
+      <p class="posted"><i class="fa fa-clock-o"></i> recently</p>
       <p>\{{content}}</p>
       <p class="reply"><a href="#submit-comment"><i class="fa fa-reply"></i> Reply</a></p>
     </div>
   </div>
-  <!-- /.comment-->
+</script>
+<script id="page-template" type="text/x-handlebars">
+  <li class="page-item">
+    <a href="/category/product/\{{slug}}?pageComment=2" class="page-link">2</a>
+  </li>
 </script>

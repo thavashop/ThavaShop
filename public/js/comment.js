@@ -5,6 +5,7 @@ $('#comment-form button').on('click', function (e) {
             content: $("#comment-content").val(),
             productId: $("#product-id").val(),
             name: $("#name").val(),
+            slug: $("#slug").val(),
         }, function (data) {
             if ($("#comment-page").val() == 1) {
                 const commentTemplate = Handlebars.compile(
@@ -20,6 +21,13 @@ $('#comment-form button').on('click', function (e) {
             let words = numberComment.split(" ");
             words[0]++;
             $("#comments-size")[0].innerHTML = `${words[0]} comments`;
+            if (words[0] == 7) {
+                data.slug = $("#slug").val();
+                const pageTemplate = Handlebars.compile(
+                    document.getElementById("page-template").innerHTML);
+                const commentHtml = pageTemplate(data);
+                $(".pagination").append(commentHtml);
+            }
         })
     }
 })
