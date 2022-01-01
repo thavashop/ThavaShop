@@ -74,6 +74,8 @@ exports.productBySlug = (slug) => Product.findOne({
   slug: slug
 }).lean();
 
+exports.top = (n) => Product.find({}).sort({ 'sales': 'desc' }).limit(n).lean();
+
 exports.postComment = (name, productId, content) => {
   return new Comment({
     name: name,
