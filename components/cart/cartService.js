@@ -5,56 +5,76 @@ exports.getCart = (customer) => {
     .lean();
 };
 
-exports.addOrUpdateCart = (customer, productId, quantity) => {
-  return Cart.findOne({ customer: customer })
-    .then((cart) => {
-      if (cart) {
-        //check if product already exists in cart
-        const productExists = cart.products.some(
-          (product) => product.productId.toString() === productId.toString()
-        );
-        if (productExists) {
-          //update quantity
-          return Cart.findOneAndUpdate(
-            { customer: customer, "products.productId": productId },
-            {
-              $inc: {
-                "products.$.quantity": quantity,
-              },
-            },
-            { new: true }
-          );
-        } else {
-          //add product to cart
-          return Cart.findOneAndUpdate(
-            { customer: customer },
-            {
-              $addToSet: {
-                products: {
-                  productId: productId,
-                  quantity: quantity,
-                },
-              },
-            },
-            { new: true }
-          );
-        }
-      } else {
-        //create new cart
-        return Cart.create({
-          customer: customer,
-          products: [
-            {
-              productId: productId,
-              quantity: quantity,
-            },
-          ],
+exports.addOrUpdateCart = (customer, basket) => {
+  return Cart.findOne({ customer: customer }).then((cart) => {
+    if (cart) {
+      //if basket is an array
+      if (Array.isArray(basket)) {
+        //get productId list in basket
+        const productIds = basket.map((basketItem) => {
+          return basketItem.productId.toString();
         });
+        //find product in cart
+        const productInCart = cart.products.filter((product) => {
+          return productIds.includes(product.productId.toString());
+        });
+        //update quantity
+        productInCart.forEach((product) => {
+          const productIndex = cart.products.findIndex(
+            (productInCart) =>
+              productInCart.productId.toString() ===
+              product.productId.toString()
+          );
+          const { quantity } = basket.find(
+            (basketItem) =>
+              basketItem.productId.toString() === product.productId.toString()
+          );
+          //old quantity in cart db
+          const oldQuantity = cart.products[productIndex].quantity;
+          //new quantity
+          const newQuantity = oldQuantity + quantity;
+          //update quantity
+          cart.products[productIndex].quantity = newQuantity;
+        });
+        // //add new product
+        basket.forEach((basketItem) => {
+          const productIndex = cart.products.findIndex(
+            (productInCart) =>
+              productInCart.productId.toString() ===
+              basketItem.productId.toString()
+          );
+          if (productIndex === -1) {
+            cart.products.push({
+              productId: basketItem.productId,
+              quantity: basketItem.quantity,
+            });
+          }
+        });
+        return cart.save();
+      } else {
+        const productIndex = cart.products.findIndex(
+          (product) =>
+            product.productId.toString() === basket.productId.toString()
+        );
+        const product = cart.products[productIndex];
+        const { quantity } = basket;
+        if (product) {
+          const { quantity: oldQuantity } = product;
+          product.quantity = oldQuantity + quantity;
+          cart.products[productIndex] = product;
+        } else {
+          cart.products.push(basket);
+        }
+        return cart.save();
       }
-    })
-    .then((cart) => {
-      return cart;
-    });
+    } else {
+      const cart = new Cart({
+        customer,
+        products: basket,
+      });
+      return cart.save();
+    }
+  });
 };
 
 exports.removeFromCart = (customer, productId) => {

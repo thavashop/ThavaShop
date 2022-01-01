@@ -8,13 +8,6 @@ exports.getCart = async (req, res) => {
     //get cart from cookie
     const cart = req.cookies?.cart;
     if (cart) {
-      //  [
-      // { productId: productId, quantity:  1 },
-      // { productId: productId, quantity: 2 },
-      // { productId: productId, quantity: 4 },
-      // { productId: productId, quantity:  1 },
-      // ];
-
       //map productIds list to products list
       const productIds = cart.map((item) => item.productId);
       const products = await productService.getProductsByIds(productIds);
@@ -73,52 +66,51 @@ exports.getCart = async (req, res) => {
 exports.addToCart = async (req, res) => {
   const { productId } = req.body;
   let { quantity } = req.body;
-  //if user is logged in
-  // await cartService.addOrUpdateCart(
-  //   new ObjectId("61c56ed37f4ad551a3907197"),
-  //   productId,
-  //   quantity ?? 1
-  // );
   //cast quantity to number
   quantity = Number(quantity ?? 1);
 
   if (res.locals?.user) {
-    await cartService.addOrUpdateCart(
-      res.locals.user._id,
+    const cart = await cartService.addOrUpdateCart(res.locals.user._id, {
       productId,
-      quantity ?? 1
-    );
-  }
-
-  //creat cart array if it doesn't exist
-  const initCart = [...(req.cookies?.cart || [])];
-  //check if product already exists in cart
-  const productExists = initCart.some(
-    (product) => product.productId.toString() === productId.toString()
-  );
-  if (productExists) {
-    //update quantity
-    const updatedCart = initCart.map((product) => {
-      if (product.productId.toString() === productId.toString()) {
-        return {
-          productId: product.productId,
-          quantity: product.quantity + (quantity ?? 1),
-        };
-      } else {
-        return product;
-      }
+      quantity,
     });
-    res.cookie("cart", updatedCart);
+    console.log(cart.products.length);
+    res.cookie("cartLength", cart.products.length);
   } else {
-    //add product to cart
-    const updatedCart = [
-      ...initCart,
-      {
-        productId: productId,
-        quantity: quantity ?? 1,
-      },
-    ];
-    res.cookie("cart", updatedCart);
+    //creat cart array if it doesn't exist
+    const initCart = [...(req.cookies?.cart || [])];
+    const cartLength = req.cookie?.cartLength ?? 0;
+
+    //check if product already exists in cart
+    const productExists = initCart.some(
+      (product) => product.productId.toString() === productId.toString()
+    );
+    if (productExists) {
+      //update quantity
+      const updatedCart = initCart.map((product) => {
+        if (product.productId.toString() === productId.toString()) {
+          return {
+            productId: product.productId,
+            quantity: product.quantity + (quantity ?? 1),
+          };
+        } else {
+          return product;
+        }
+      });
+      res.cookie("cart", updatedCart);
+      res.cookie("cartLength", updatedCart.length);
+    } else {
+      //add product to cart
+      const updatedCart = [
+        ...initCart,
+        {
+          productId: productId,
+          quantity: quantity ?? 1,
+        },
+      ];
+      res.cookie("cart", updatedCart);
+      res.cookie("cartLength", updatedCart.length);
+    }
   }
 
   res.redirect("/category");
@@ -126,19 +118,20 @@ exports.addToCart = async (req, res) => {
 
 exports.removeFromCart = async (req, res) => {
   const { productId } = req.body;
-  // await cartService.removeFromCart(
-  //   new ObjectId("61acf26071c71a7a9ed10f2e"),
-  //   productId
-  // );
 
   if (res.locals?.user) {
-    await cartService.removeFromCart(res.locals.user._id, productId);
+    const cart = await cartService.removeFromCart(
+      res.locals.user._id,
+      productId
+    );
+
+    res.cookie("cartLength", cart.products.length);
+  } else {
+    const cart = req.cookies?.cart.filter(
+      (item) => item.productId.toString() !== productId.toString()
+    );
+    res.cookie("cart", cart);
+    res.cookie("cartLength", cart.products.length);
   }
-
-  const cart = req.cookies?.cart.filter(
-    (item) => item.productId.toString() !== productId.toString()
-  );
-  res.cookie("cart", cart);
-
   res.redirect("/cart");
 };

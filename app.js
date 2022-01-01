@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
 const expressHbs = require("express-handlebars");
-const flash = require('express-flash');
+const flash = require("express-flash");
 
 const indexRouter = require("./routes/index");
 const authRouter = require("./components/auth");
@@ -21,7 +21,7 @@ const hbs = expressHbs.create({
   defaultLayout: path.join(__dirname, "views/layout"),
   extname: ".hbs",
   helpers: require("./utils/handlebars").helpers,
-  partialsDir: './views/partials'
+  partialsDir: "./views/partials",
 });
 
 app.engine("hbs", hbs.engine);
@@ -45,6 +45,10 @@ app.use(passport.session());
 
 app.use(function (req, res, next) {
   res.locals.user = req.user;
+  if (!res.locals.user) {
+    const cartLength = req.cookies?.cart?.length ?? 0;
+    res.cookie("cartLength", cartLength);
+  }
   next();
 });
 
@@ -55,9 +59,9 @@ app.use("/users", usersRouter);
 app.use("/category", productRouter);
 app.use("/cart", cartRouter);
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function (err, req, res, next) {

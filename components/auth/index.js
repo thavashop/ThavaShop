@@ -1,26 +1,60 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const authController = require('./authController')
-const loggedInUserGuard = require('../../middlewares/loggedInUserGuard')
-const passport = require('../../passport')
+const { ObjectId } = require("mongodb");
+const authController = require("./authController");
+const loggedInUserGuard = require("../../middlewares/loggedInUserGuard");
+const cartService = require("../cart/cartService");
+const passport = require("../../passport");
 
+router.get("/login", authController.login);
 
-router.get('/login', authController.login);
-router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login?wrong-password'
-}));
+router.post("/login", function (req, res, next) {
+  passport.authenticate("local", function (err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect("/login?wrong-password");
+    }
+    req.logIn(user, async function (err) {
+      if (err) {
+        return next(err);
+      }
 
-router.get('/logout', authController.logout);
-router.post('/register', authController.register);
+      const cartCookie = req.cookies?.cart;
+      if (cartCookie) {
+        //add cart from cookie to db
+        console.log(cartCookie);
+        //map productId in cookie cart to productId in db
+        const cartInCookie = cartCookie.map((item) => {
+          return {
+            productId: ObjectId(item.productId),
+            quantity: item.quantity,
+          };
+        });
+        const cart = await cartService.addOrUpdateCart(user._id, cartInCookie);
+        res.cookie("cartLength", cart.products.length);
+        //delete cookie
+        res.clearCookie("cart");
+      } else {
+        const cart = await cartService.getCart(user._id);
+        res.cookie("cartLength", cart.products.length);
+      }
 
-
-router.get('/account', loggedInUserGuard, (req, res) => {
-    res.render('auth/views/account')
+      return res.redirect("/");
+    });
+  })(req, res, next);
 });
-router.post('/account', authController.editAccount)
-router.post('/account/password', authController.changePassword)
 
-router.get('/activate', authController.activate)
+router.get("/logout", authController.logout);
+router.post("/register", authController.register);
+
+router.get("/account", loggedInUserGuard, (req, res) => {
+  res.render("auth/views/account");
+});
+router.post("/account", authController.editAccount);
+router.post("/account/password", authController.changePassword);
+
+router.get("/activate", authController.activate);
 
 module.exports = router;

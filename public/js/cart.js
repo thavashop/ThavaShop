@@ -1,5 +1,6 @@
 //convert cookie data to an array
 const cookieData = $.cookie("cart");
+const cartLength = $.cookie("cartLength");
 let cart;
 
 //set timeout to debounce the function
@@ -11,6 +12,11 @@ if (cookieData) {
 const inputQuantity = $(".table-responsive input[type='number']");
 const beforeQuantity =
   Number(inputQuantity.val()) < 0 ? 0 : Number(inputQuantity.val());
+
+//assign cookie cart length to cart length
+$("#basket-overview")
+  .find("span")
+  .text(cartLength ?? 0);
 
 inputQuantity.bind("input", function () {
   const self = this;
@@ -34,10 +40,6 @@ inputQuantity.bind("input", function () {
     updateCart(productId, afterQuantity);
   }, 1000);
 });
-
-$("#basket-overview")
-  .find("span")
-  .text(cart?.length ?? 0);
 
 const updateCart = (productId, quantity) => {
   $.ajax({
