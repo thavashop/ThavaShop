@@ -196,7 +196,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="name">Name <span class="required">*</span></label>
-                    <input id="name" type="text" class="form-control" name="name" required>
+                    <input id="name" type="text" class="form-control" name="name" required/>
                   </div>
                 </div>
               </div>
@@ -211,7 +211,7 @@
                     <input id="product-id" type="hidden" name="productId" value="{{product._id}}">
                     <input id="slug" type="hidden" name="slug" value="{{product.slug}}">
                     <input id="comment-page" type="hidden" name="page" value="{{page}}">
-                    <input id="comment-content" type="text" class="form-control" id="comment" rows="4" name="content" required>
+                    <input id="comment-content" type="text" class="form-control" id="comment" rows="4" name="content" required/>
                   </div>
                 </div>
               </div>
@@ -290,6 +290,6 @@
 </script>
 <script id="page-template" type="text/x-handlebars">
   <li class="page-item">
-    <a href="/category/product/\{{slug}}?pageComment=2" class="page-link">2</a>
+    <a href="/category/product/\{{slug}}?pageComment=\{{page}}" class="page-link">\{{pageIndex}}</a>
   </li>
 </script>
