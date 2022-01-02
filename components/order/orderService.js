@@ -4,11 +4,7 @@ const Order = require('./orderModel')
 
 exports.new = () => new Order()
 
-// exports.findByPage = (page, itemPerPage) => Order.find({}).skip(page * itemPerPage).limit(itemPerPage).lean({virtuals: true})
-
 exports.findById = (id) => Order.findById(id)
-
-exports.deleteOne = (id) => Order.deleteOne({ _id: id })
 
 exports.add = (customer, details, paymentType) => {
     const order = new Order({customer,details,paymentType})
@@ -31,15 +27,5 @@ exports.add = (customer, details, paymentType) => {
 //     }
 //     return entries
 // }
-
-// exports.updateStatus = async (id, status) => {
-//     try {
-//         await Order.updateOne({id: id},{$set: {status: status}})        
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
-// exports.sortedByDate = () => Order.find({}).sort({date: 'asc'}).lean()
 
 exports.model = Order

@@ -11,7 +11,7 @@ const schema = mongoose.Schema({
     },
     status: {
         type: String,
-        defautl: 'not delivered'
+        default: 'not delivered'
     },
     paymentType: String,
     date: {
