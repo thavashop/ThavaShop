@@ -58,7 +58,9 @@
                     <div class="left"><a href="/category" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i> Continue shopping</a></div>
                     <div class="right">
                       <button class="btn btn-outline-secondary"><i class="fa fa-refresh"></i> Update cart</button>
-                      <button type="submit" class="btn btn-primary">Proceed to checkout <i class="fa fa-chevron-right"></i></button>
+                      <form action="/cart/checkout" method="post">                        
+                        <button type="submit" class="btn btn-primary">Proceed to checkout <i class="fa fa-chevron-right"></i></button>
+                      </form>
                     </div>
                   </div>
 

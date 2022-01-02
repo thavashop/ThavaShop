@@ -7,9 +7,14 @@ const passport = require('../../passport')
 
 router.get('/login', authController.login);
 router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
     failureRedirect: '/login?wrong-password'
-}));
+}), (req, res) => {
+    if (req.user) {
+        const to = req.cookies.redirectAfterLogin
+        res.redirect(to ? to : '/')
+    }
+});
+
 
 router.get('/logout', authController.logout);
 router.post('/register', authController.register);

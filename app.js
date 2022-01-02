@@ -66,7 +66,7 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // log stacks
-  console.log(err.stack);
+  if (err.status != 404) console.log(err.stack);
 
   // render the error page
   res.status(err.status || 500);
