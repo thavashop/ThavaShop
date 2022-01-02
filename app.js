@@ -12,6 +12,7 @@ const authRouter = require("./components/auth");
 const usersRouter = require("./routes/users");
 const productRouter = require("./components/products/index");
 const cartRouter = require("./components/cart/index");
+const orderRouter = require("./components/order/index");
 const passport = require("./passport");
 
 const app = express();
@@ -58,6 +59,7 @@ app.use("/index", indexRouter);
 app.use("/users", usersRouter);
 app.use("/category", productRouter);
 app.use("/cart", cartRouter);
+app.use("/order", orderRouter);
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
 //   next(createError(404));
@@ -70,7 +72,7 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // log stacks
-  console.log(err.stack);
+  if (err.status != 404) console.log(err.stack);
 
   // render the error page
   res.status(err.status || 500);

@@ -1,6 +1,7 @@
 const { ObjectId } = require("mongodb");
 const cartService = require("./cartService");
 const productService = require("../products/productService");
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY)
 
 exports.getCart = async (req, res) => {
   const customer = res.locals?.user;
@@ -135,3 +136,54 @@ exports.removeFromCart = async (req, res) => {
   }
   res.redirect("/cart");
 };
+
+exports.checkout = async (req, res) => {
+  const customer = res.locals?.user;
+  let products = null
+  if (!customer) {
+    const cart = req.cookies?.cart;
+    if (cart) {
+      req.flash('error', 'You must login before checkout')
+      res.cookie('redirectAfterLogin', '/cart')
+      return res.redirect('/login#login')
+    }
+  } else {
+    const cart = await cartService.getCart(res.locals?.user._id);
+    if (cart) products = cart.products;
+  }
+
+  // exception
+  if (products == null) {
+    req.flash('error', 'You do not have anything in cart to checkout')
+    return res.redirect("/cart");
+  }
+
+  // create checkout session
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      payment_intent_data: { metadata: { userId: customer._id } },
+      line_items: products.map(entry => ({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: entry.productId.name,
+            images: [entry.productId.image],
+            description: entry.productId.description,
+            metadata: { id: `${entry.productId._id}` },
+          },
+          unit_amount: Math.ceil(entry.productId.price * 100)
+        },
+        quantity: entry.quantity,
+      })),
+      success_url: `${process.env.DOMAIN_NAME}/order/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.DOMAIN_NAME}/cart`,
+      customer_email: customer.email
+    })
+
+    res.redirect(session.url)
+  } catch (error) {
+    console.log(error);
+  }
+}

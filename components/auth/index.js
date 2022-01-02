@@ -17,8 +17,8 @@ router.post("/login", function (req, res, next) {
       return res.redirect("/login?wrong-password");
     }
     if (user.status != 'activated') {
-      const {email} = user;
-      res.render('auth/views/activate', {email})
+      const { email } = user;
+      res.render('auth/views/activate', { email })
     } else {
       req.logIn(user, async function (err) {
         if (err) {
@@ -43,8 +43,12 @@ router.post("/login", function (req, res, next) {
         } else {
           const cart = await cartService.getCart(user._id);
           res.cookie("cartLength", cart?.products?.length ?? 0);
+
         }
 
+        const to = req.cookies.redirectAfterLogin
+        res.clearCookie('redirectAfterLogin')
+        res.redirect(to ? to : '/')
         return res.redirect("/");
       });
     }
