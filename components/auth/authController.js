@@ -30,7 +30,7 @@ exports.register = async (req, res) => {
             res.redirect('/login?username-exist')
         } else {
             const user = await userService.register(username, email, password);
-            res.redirect('/login?register-successfully')
+            res.render('auth/views/activate.hbs', { email });
         }
     } else {
         res.redirect('/login?password-confirm-failed')
@@ -51,12 +51,12 @@ exports.editAccount = async (req, res) => {
 
 exports.activate = async (req, res) => {
     const {
-        email
+        username
     } = req.query;
     const activationString = req.query['activation-string'];
-    const result = await userService.activate(email, activationString)
+    const result = await userService.activate(username, activationString)
     if (result) {
-        const user = await userService.findByEmail(email)
+        const user = await userService.findByUsername(username)
         req.login(user, function (err) {
             if (err) return next(err);
             return res.redirect('/')

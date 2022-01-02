@@ -8,7 +8,9 @@ exports.findByUsername = (username) => userModel.findOne({
     username: username
 }).lean();
 
-exports.checkExists = (username) => userModel.find({username: username}).limit(1).size();
+exports.checkExists = (username) => userModel.find({
+    username: username
+}).limit(1).size();
 
 exports.findByEmail = (email) => userModel.findOne({
     email: email
@@ -32,12 +34,14 @@ exports.register = async (username, email, password) => {
     });
     // send email
     const msg = {
-        to: email, // Change to your recipient
+        to: 'vanpronhat@gmail.com', // Change to your recipient
         from: process.env.EMAIL_SENDER, // Change to your verified sender
         subject: 'ThavaShop account email activation',
         text: 'and easy to do anywhere, even with Node.js',
         html: `<h1>Thanks for register your account with ThavaShop</h1>
-        <p>Please activate your account <a href="${process.env.DOMAIN_NAME}/activate?email=${email}&activation-string=${activationString}">Click here!</a></p>`,
+        <p>Please activate your account <a
+        href="${process.env.DOMAIN_NAME}/activate?username=${username}&activation-string=${activationString}"
+        >Click here!</a></p>`,
     }
     sgMail
         .send(msg)
@@ -49,28 +53,30 @@ exports.register = async (username, email, password) => {
         })
 }
 
-exports.activate = async (email, activationString) => {
+exports.activate = async (username, activationString) => {
     const user = await userModel.findOne({
-        email,
-        activationString,
+        username: username,
+        activationString: activationString
     }).lean();
-    if (!user) {
-        return false;
+    if (user) {
+        await userModel.updateOne({
+            username: username
+        }, {
+            $set: {
+                status: "activated"
+            }
+        })
+        return true;
     }
-    await userModel.updateOne({
-        email,
-        activationString,
-    }, {
-        $Set: {
-            status: 'activated',
-        },
-    });
-    return true;
 }
 
-exports.edit = async (id, changes) => {    
+exports.edit = async (id, changes) => {
     try {
-        return await userModel.findOneAndUpdate({_id: id}, changes, {new: true}).lean()      
+        return await userModel.findOneAndUpdate({
+            _id: id
+        }, changes, {
+            new: true
+        }).lean()
     } catch (error) {
         console.log(error);
     }
@@ -79,7 +85,15 @@ exports.edit = async (id, changes) => {
 exports.changePassword = async (id, password) => {
     try {
         const newPassword = await bcrypt.hash(password, 10)
-        return await userModel.findOneAndUpdate({_id: id}, {$set: {password: newPassword}}, {new: true}).lean()        
+        return await userModel.findOneAndUpdate({
+            _id: id
+        }, {
+            $set: {
+                password: newPassword
+            }
+        }, {
+            new: true
+        }).lean()
     } catch (error) {
         console.log(error);
     }
