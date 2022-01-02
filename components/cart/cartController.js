@@ -153,7 +153,7 @@ exports.checkout = async (req, res) => {
       req.flash('error', 'You must login before checkout')
       res.cookie('redirectAfterLogin', '/cart')
       return res.redirect('/login#login')
-      
+
     } else {
       req.flash('error', 'You do not have anything in cart to checkout')
       return res.redirect("/cart/views/cart");
@@ -170,20 +170,29 @@ exports.checkout = async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
+      payment_intent_data: {
+        metadata: {userId: customer._id}
+      },
       line_items: products.map(entry => {
         return {
           price_data: {
             currency: 'usd',
-            product_data: {name: entry.productId.name},
+            product_data: {
+              name: entry.productId.name,
+              metadata: {id: `${entry.productId._id}`},
+              images: [entry.productId.image],
+              description: entry.productId.description,
+            },
             unit_amount: Math.ceil(entry.productId.price * 100)
           },
-          quantity: entry.quantity
+          quantity: entry.quantity,
         }
-      }),      
-      success_url: `${process.env.DOMAIN_NAME}/sucess.html`,
-      cancel_url: `${process.env.DOMAIN_NAME}/cancel.html`
+      }),
+      success_url: `${process.env.DOMAIN_NAME}/order/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.DOMAIN_NAME}/cart`,
+      customer_email: customer.email
     })
-    
+
     res.redirect(session.url)
   } catch (error) {
     console.log(error);
