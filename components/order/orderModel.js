@@ -9,7 +9,10 @@ const schema = mongoose.Schema({
     details: {
         type: Array
     },
-    status: String,
+    status: {
+        type: String,
+        defautl: 'not delivered'
+    },
     paymentType: String,
     date: {
         type: Date,

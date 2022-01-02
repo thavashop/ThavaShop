@@ -11,6 +11,7 @@ router.post('/login', passport.authenticate('local', {
 }), (req, res) => {
     if (req.user) {
         const to = req.cookies.redirectAfterLogin
+        res.clearCookie('redirectAfterLogin')
         res.redirect(to ? to : '/')
     }
 });

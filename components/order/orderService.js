@@ -10,6 +10,11 @@ exports.findById = (id) => Order.findById(id)
 
 exports.deleteOne = (id) => Order.deleteOne({ _id: id })
 
+exports.add = (customer, details, paymentType) => {
+    const order = new Order({customer,details,paymentType})
+    order.save()
+}
+
 // exports.getProductEntries = async (details) => {
 //     let entries = []
 //     for (const entry of details) {

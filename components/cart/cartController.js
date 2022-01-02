@@ -156,13 +156,13 @@ exports.checkout = async (req, res) => {
 
     } else {
       req.flash('error', 'You do not have anything in cart to checkout')
-      return res.redirect("/cart/views/cart");
+      return res.redirect("/cart");
     }
   } else {
     const cart = await cartService.getCart(res.locals?.user._id);
     if (!cart) {
       req.flash('error', 'You do not have anything in cart to checkout')
-      return res.redirect("/cart/views/cart");
+      return res.redirect("/cart");
     }
     products = cart.products;
   }

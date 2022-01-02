@@ -74,3 +74,5 @@ exports.removeFromCart = (customer, productId) => {
     }
   });
 };
+
+exports.clear = (customer) => Cart.deleteMany({customer: customer})

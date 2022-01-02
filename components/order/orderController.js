@@ -1,4 +1,5 @@
 const orderService = require('./orderService')
+const cartService = require('../cart/cartService')
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY)
 
 exports.details = async (req, res) => {
@@ -18,6 +19,7 @@ exports.details = async (req, res) => {
 
 exports.success = async (req, res) => {
     try {
+        // get information
         const session = await stripe.checkout.sessions.retrieve(req.query.session_id, {
             expand: ['line_items', 'payment_intent', 'line_items.data.price.product']
         });
@@ -28,26 +30,23 @@ exports.success = async (req, res) => {
                 amount: entry.quantity
             }
         })
-
-        const order = new orderService.model({
-            customer: userId,
-            details: products,
-            status: session.payment_status,
-            paymentType: session.payment_method_types[0]
-        })
-
         try {
-            await order.save()
+            // add order
+            await orderService.add(userId, products, session.payment_method_types[0])
             req.flash('success', 'Order added')
+
+            // clear cart
+            await cartService.clear(userId)
+            return res.render('order/views/thankyou')
+
         } catch (err) {
             console.log(err);
             req.flash('error', 'Order add failed')
-        }
-        res.redirect('/')
-        
+        }                
     } catch (error) {
         console.log(error);
     }
+    res.render('error')
 }
 
 // exports.add = async (req, res) => {
