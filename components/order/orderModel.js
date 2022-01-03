@@ -13,6 +13,11 @@ const schema = mongoose.Schema({
         type: String,
         default: 'not delivered'
     },
+    subtotal: Number,
+    ship: {
+        type: Number,
+        default: 10
+    },
     paymentType: String,
     date: {
         type: Date,

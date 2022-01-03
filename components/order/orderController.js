@@ -2,15 +2,21 @@ const orderService = require('./orderService')
 const cartService = require('../cart/cartService')
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY)
 
+exports.history = async (req, res) => {
+    try {
+        const orders = await orderService.findByCustomer(req.user._id)
+        res.render('order/views/history', {orders})
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 exports.details = async (req, res) => {
     try {
-        const order = await orderService.findById(req.params.id).populate('customer').lean()
+        const order = await orderService.findById(req.params.id).lean()
         const products = await orderService.getProductEntries(order.details)
-        res.render('order/views/details', {
-            order: order,
-            customer: order.customer,
-            products: products
-        });
+        order.total = order.ship + order.subtotal
+        res.render('order/views/details', {order, products});
     } catch (err) {
         console.log(err);
         res.render('order/views/details')
@@ -30,7 +36,7 @@ exports.success = async (req, res) => {
         }))
         try {
             // add order
-            await orderService.add(userId, products, session.payment_method_types[0])
+            await orderService.add(userId, products, session.amount_total/100, session.payment_method_types[0])
             req.flash('success', 'Order added')
 
             // clear cart

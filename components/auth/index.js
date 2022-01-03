@@ -48,8 +48,8 @@ router.post("/login", function (req, res, next) {
 
         const to = req.cookies.redirectAfterLogin
         res.clearCookie('redirectAfterLogin')
-        res.redirect(to ? to : '/')
-        return res.redirect("/");
+        return res.redirect(to ? to : '/')
+        // return res.redirect("/");
       });
     }
   })(req, res, next);
