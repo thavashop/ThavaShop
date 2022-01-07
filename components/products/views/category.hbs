@@ -57,10 +57,10 @@
             <div class="card-body">
               <form method="GET" action="/category">
                 <div class="form-group">
-                  {{#each colorsBrandsListProduct.brands}}
+                  {{#each attrsProductList.brands}}
                     <div class="checkbox">
                       <label for="{{this}}">
-                        <input type="checkbox" name="brand" value="{{this}}"> {{this}} (10)
+                        <input type="checkbox" name="brand" value="{{this}}"> {{this}}
                       </label>
                     </div>
                      {{/each }}
@@ -77,10 +77,10 @@
             <div class="card-body">
               <form method="GET" action="/category" >
                 <div class="form-group">
-                  {{#each colorsBrandsListProduct.colors}}
+                  {{#each attrsProductList.colors}}
                     <div class="checkbox">
                       <label for="{{this}}">
-                        <input type="checkbox" name="color" value="{{this}}"><span class="colour"></span> {{this}} (14)
+                        <input type="checkbox" name="color" value="{{this}}"><span class="colour"></span> {{this}}
                       </label>
                     </div>
                   {{/each }}
@@ -104,17 +104,18 @@
                   <h4 class="card-title">Search</h4>
               </div>
               <div class="card-body">
-                  <form class="form form-vertical">
+                  <form class="form form-vertical" action="/category" method="GET">
                       <div class="row">
                           <div class="col-3">
                               <div class="mb-1">
                                   <label class="form-label" for="first-name-icon">Brand</label>
                                   <div class="input-group input-group-merge">
                                       <span class="input-group-text"><img src="https://img.icons8.com/material-outlined/24/000000/company.png"/></span>
-                                     <select required name="Brand" class="form-control">
+                                     <select name="brand" class="form-control">
                                       <option disabled selected value>None</option>
-                                      <option>Price</option>
-                                      <option>Name</option>
+                                      {{#each attrsProductList.brands}}
+                                        <option>{{this}}</option>
+                                      {{/each }}
                                      </select>
                                   </div>
                               </div>
@@ -124,10 +125,11 @@
                                   <label class="form-label" for="email-id-icon">Color</label>
                                   <div class="input-group input-group-merge">
                                       <span class="input-group-text"><img src="https://img.icons8.com/material-outlined/24/000000/afro-pick.png"/></span>
-                                      <select required name="Color" class="form-control">
+                                      <select name="color" class="form-control">
                                         <option disabled selected value>None</option>
-                                        <option>Price</option>
-                                        <option>Name</option>
+                                        {{#each attrsProductList.colors}}
+                                          <option>{{this}}</option>
+                                      {{/each }}
                                      </select>
                                   </div>
                               </div>
@@ -137,10 +139,11 @@
                                   <label class="form-label" for="contact-info-icon">Size</label>
                                   <div class="input-group input-group-merge">
                                       <span class="input-group-text"><img src="https://img.icons8.com/material-outlined/24/000000/hanger.png"/></span>
-                                      <select required name="Size" class="form-control">
+                                      <select name="size" class="form-control">
                                         <option disabled selected value>None</option>
-                                        <option>Price</option>
-                                        <option>Name</option>
+                                       {{#each attrsProductList.sizes}}
+                                        <option>{{this}}</option>
+                                      {{/each }}
                                      </select>
                                   </div>
                               </div>
@@ -150,10 +153,11 @@
                                   <label class="form-label" for="password-icon">Material</label>
                                   <div class="input-group input-group-merge">
                                       <span class="input-group-text"><img src="https://img.icons8.com/material-outlined/24/000000/t-shirt.png"/></span>
-                                      <select required name="Material" class="form-control">
+                                      <select name="material" class="form-control">
                                         <option disabled selected value>None</option>
-                                        <option>Price</option>
-                                        <option>Name</option>
+                                       {{#each attrsProductList.materials}}
+                                        <option>{{this}}</option>
+                                      {{/each }}
                                      </select>
                                   </div>
                               </div>
