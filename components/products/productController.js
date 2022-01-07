@@ -98,6 +98,7 @@ exports.getProductById = async function (req, res) {
 
 exports.renderDetail = async function (req, res) {
   const product = await productService.productBySlug(req.params.slug);
+  const relatedProducts = await productService.getRelatedProducts(product.brand, product._id)
   const comments = await productService.getProductComment(product._id);
   comments.sort((a, b) => new Date(b.createAt) - new Date(a.createAt));
 
@@ -147,6 +148,7 @@ exports.renderDetail = async function (req, res) {
 
   res.render("products/views/detail.hbs", {
     product,
+    relatedProducts,
     commentsToShow,
     size,
     pageBar,

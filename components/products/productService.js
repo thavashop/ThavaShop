@@ -47,4 +47,6 @@ exports.postComment = (name, productId, content) => {
 exports.getProductComment = (productId) =>
   Comment.find({ productId: productId }).lean();
 
-exports.searchByName = (name) => Product.find({"name": {"$regex": name, "$options": "i"}})
+exports.searchByName = (name) => Product.find({ "name": { "$regex": name, "$options": "i" } })
+
+exports.getRelatedProducts = (brand, id) => Product.find({brand: brand, _id: {"$ne": id}}).limit(4).lean()

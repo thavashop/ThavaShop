@@ -187,6 +187,30 @@
                     class="fa fa-twitter"></i></a><a href="#" class="email"><i class="fa fa-envelope"></i></a></p>
             </div>
           </div>
+          <div class="box">
+            <h3>You may also like these products</h3>
+          </div>
+          <div class="row same-height-row">
+            {{#each relatedProducts}}
+            <div class="col-md-3 col-sm-6">
+              <div class="product same-height">
+                <div class="flip-container">
+                  <div class="flipper">
+                    <div class="front"><a href="/category/product/{{slug}}"><img src="{{image}}" alt="" class="img-fluid"></a>
+                    </div>
+                    <div class="back"><a href="/category/product/{{slug}}"><img src="{{image2}}" alt="" class="img-fluid"></a>
+                    </div>
+                  </div>
+                </div><a href="/category/product/{{slug}}" class="invisible"><img src="{{image}}" alt="" class="img-fluid"></a>
+                <div class="text">
+                  <h3>{{name}}</h3>
+                  <p class="price">${{price}}</p>
+                </div>
+              </div>
+              <!-- /.product-->
+            </div>
+            {{/each}}
+          </div>
           <!-- /#post-content-->
           <div id="comment-form" class="box">
             <h4>Leave comment</h4>
@@ -196,7 +220,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="name">Name <span class="required">*</span></label>
-                    <input id="name" type="text" class="form-control" name="name" required/>
+                    <input id="name" type="text" class="form-control" name="name" required />
                   </div>
                 </div>
               </div>
@@ -211,7 +235,8 @@
                     <input id="product-id" type="hidden" name="productId" value="{{product._id}}">
                     <input id="slug" type="hidden" name="slug" value="{{product.slug}}">
                     <input id="comment-page" type="hidden" name="page" value="{{page}}">
-                    <input id="comment-content" type="text" class="form-control" id="comment" rows="4" name="content" required/>
+                    <input id="comment-content" type="text" class="form-control" id="comment" rows="4" name="content"
+                      required />
                   </div>
                 </div>
               </div>
@@ -247,24 +272,26 @@
                 more</a></p> --}}
             <nav aria-label="Page navigation example" class="d-flex justify-content-center">
               <ul class="pagination">
-                  {{#if previous.isHas}}
-                  <li class="page-item"><a href="/category/product/{{product.slug}}?pageComment={{previous.page}}" aria-label="Previous"
-                      class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
-                  {{/if}}
-                  {{#each pageBar}}
-                  <li class="page-item {{active}}">
-                    <a href="/category/product/{{../product.slug}}?pageComment={{page}}" class="page-link">{{page}}</a>
-                  </li>
-                  {{/each}}
-                  {{!-- <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                  <li class="page-item"><a href="#" class="page-link">2</a></li>
-                  <li class="page-item"><a href="#" class="page-link">3</a></li>
-                  <li class="page-item"><a href="#" class="page-link">4</a></li>
-                  <li class="page-item"><a href="#" class="page-link">5</a></li> --}}
-                  {{#if next.isHas}}
-                  <li class="page-item"><a href="/category/product/{{product.slug}}?pageComment={{next.page}}" aria-label="Next" class="page-link"><span
-                        aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
-                  {{/if}}
+                {{#if previous.isHas}}
+                <li class="page-item"><a href="/category/product/{{product.slug}}?pageComment={{previous.page}}"
+                    aria-label="Previous" class="page-link"><span aria-hidden="true">«</span><span
+                      class="sr-only">Previous</span></a></li>
+                {{/if}}
+                {{#each pageBar}}
+                <li class="page-item {{active}}">
+                  <a href="/category/product/{{../product.slug}}?pageComment={{page}}" class="page-link">{{page}}</a>
+                </li>
+                {{/each}}
+                {{!-- <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                <li class="page-item"><a href="#" class="page-link">3</a></li>
+                <li class="page-item"><a href="#" class="page-link">4</a></li>
+                <li class="page-item"><a href="#" class="page-link">5</a></li> --}}
+                {{#if next.isHas}}
+                <li class="page-item"><a href="/category/product/{{product.slug}}?pageComment={{next.page}}"
+                    aria-label="Next" class="page-link"><span aria-hidden="true">»</span><span
+                      class="sr-only">Next</span></a></li>
+                {{/if}}
               </ul>
             </nav>
           </div>
