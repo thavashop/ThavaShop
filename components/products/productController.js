@@ -2,7 +2,7 @@ const { everySize: productSize } = require("../../models/Product");
 const productService = require("./productService");
 
 exports.category = async function (req, res) {
-  let { page, sortBy, brand, color, size, material } = req.query;
+  let { page, sortBy, brand, color, size, material, search } = req.query;
   if (!page) page = 1;
 
   let filter = {
@@ -24,10 +24,15 @@ exports.category = async function (req, res) {
     }
   }
 
-  const products = await productService.filter(
+  let products = await productService.filter(
     sortBy?.toLowerCase() ?? "price",
     filter
   );
+
+  if (search) {
+    const searchProduct = products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()))
+    products = searchProduct
+  }
 
   const allProducts = await productService.list();
 

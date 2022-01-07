@@ -9,7 +9,7 @@ const schema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  image: Buffer,
+  image: String,
   image2: String,
   material: String,
   care: String,
@@ -19,6 +19,10 @@ const schema = mongoose.Schema({
   imageType: String,
   description: String,
   slug: String,
+  sales: {
+    type: Number,
+    default: 0
+}
 });
 
 module.exports = mongoose.model("Product", schema, "product");

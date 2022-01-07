@@ -15,3 +15,8 @@
 #navigation .nav-link{
     color: white;
 }
+
+#hot .img-fluid {
+    width: 250px;
+    height: 300px;
+}
