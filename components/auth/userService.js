@@ -42,8 +42,8 @@ exports.register = async (username, email, password) => {
         href="${process.env.DOMAIN_NAME}/activate?username=${username}&activation-string=${activationString}"
         >Click here!</a></p>`,
     }
-    mailTransporter.sendMail(msg, function(err, data) {
-        if(err) {
+    mailTransporter.sendMail(msg, function (err, data) {
+        if (err) {
             console.log(err.message);
         } else {
             console.log('Email sent successfully');
@@ -96,3 +96,8 @@ exports.changePassword = async (id, password) => {
         console.log(error);
     }
 }
+
+exports.findByUsernameAndAS = (username, activationString) => userModel.findOne({
+    username: username,
+    activationString: activationString
+}).lean();

@@ -1,9 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const { ObjectId } = require("mongodb");
 const authController = require("./authController");
 const loggedInUserGuard = require("../../middlewares/loggedInUserGuard");
-const cartService = require("../cart/cartService");
 
 router.get("/login", authController.login);
 
@@ -20,5 +18,12 @@ router.post("/account/password", authController.changePassword);
 
 router.get("/activate", authController.activate);
 router.post("/resendEmail", authController.resendEmail)
+
+router.get("/forgot-password", (req, res) => {
+  res.render("auth/views/forgotPassword");
+})
+router.post("/forgot-password", authController.sendMailForgotPassword)
+router.get("/reset-password", authController.resetPassword)
+router.post("/update-password", authController.updatePassword)
 
 module.exports = router;

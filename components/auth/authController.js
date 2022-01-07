@@ -1,6 +1,10 @@
 const userService = require('./userService')
 const mailTransporter = require('../../service/nodemailer')
 const passport = require("../../passport");
+const cartService = require("../cart/cartService");
+const { ObjectId } = require("mongodb");
+
+
 
 
 
@@ -88,7 +92,7 @@ exports.changePassword = async (req, res) => {
 }
 
 exports.authentication = function (req, res, next) {
-    passport.authenticate("local", function (err, user, info) {
+    passport.authenticate("local", async function (err, user, info) {
       if (err) {
         return next(err);
       }
@@ -159,4 +163,51 @@ exports.resendEmail = async (req, res) => {
     });
     req.flash("Sent", "Email sent")
     res.redirect('/login')
+}
+
+exports.sendMailForgotPassword = async (req, res) => {
+    const { username } = req.body
+    const user = await userService.findByUsername(username);
+    const msg = {
+        to: user.email, // Change to your recipient
+        from: process.env.EMAIL_SENDER, // Change to your verified sender
+        subject: 'ThavaShop account email activation',
+        html: `<h1>Thanks for register your account with ThavaShop</h1>
+        <p>Please activate your account <a
+        href="${process.env.DOMAIN_NAME}/reset-password?username=${user.username}&activation-string=${user.activationString}"
+        >Click here!</a></p>`,
+    }
+    mailTransporter.sendMail(msg, function(err, data) {
+        if(err) {
+            console.log(err.message);
+        } else {
+            console.log('Email sent successfully');
+        }
+    });
+    req.flash("Sent", "Email sent")
+    res.redirect('/login')
+}
+
+exports.resetPassword = async (req, res) => {
+    const {
+        username
+    } = req.query;
+    const activationString = req.query['activation-string'];
+    const user = await userService.findByUsernameAndAS(username, activationString)
+    if (user) {
+        req.login(user, function (err) {
+            if (err) return next(err);
+            const { username } = user;
+            return res.render("auth/views/updatePassword", {username})
+        })
+    } else {
+        return res.redirect('/')
+    }
+}
+
+exports.updatePassword = async (req, res) => {
+    const { username, password } = req.body
+    const user = await userService.findByUsername(username)
+    req.session.passport.user = await userService.changePassword(user._id, password)
+    res.redirect('/')
 }
