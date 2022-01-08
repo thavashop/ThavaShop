@@ -1,30 +1,51 @@
+const { everySize: productSize } = require("../../models/Product");
 const productService = require("./productService");
 
 exports.category = async function (req, res) {
-  let {
-    page,
-    sortBy,
-    brand,
-    color
-  } = req.query;
+  let { page, sortBy, brand, color, size, material, search } = req.query;
   if (!page) page = 1;
 
-  const products = await productService.filter(
+  let filter = {
+    ...(brand ? { brand } : {}),
+    ...(color ? { color } : {}),
+    ...(size ? { size } : {}),
+    ...(material ? { material } : {}),
+  };
+
+  //save filter to cookie if filter is not empty
+  if (Object.keys(filter).length !== 0) {
+    res.cookie("filter", filter);
+  }
+
+  if (sortBy) {
+    if (req.cookies?.filter) {
+      //merge filter with cookie filter
+      filter = { ...req.cookies.filter, ...(sortBy ? { [sortBy]: 1 } : {}) };
+    }
+  }
+
+  let products = await productService.filter(
     sortBy?.toLowerCase() ?? "price",
-    brand,
-    color
+    filter
   );
+
+  if (search) {
+    const searchProduct = products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()))
+    products = searchProduct
+  }
 
   const allProducts = await productService.list();
 
   const length = products.length;
 
-  const colorsBrandsListProduct = {
+  const attrsProductList = {
     colors: [...new Set(allProducts.map((product) => product.color))],
     brands: [...new Set(allProducts.map((product) => product.brand))],
+    sizes: productSize,
+    materials: [...new Set(allProducts.map((product) => product.material))],
   };
   // page bar
-  const pageIndex = Math.floor((page-1) / 5) * 5 + 1;
+  const pageIndex = Math.floor((page - 1) / 5) * 5 + 1;
   let pageBar = [];
   for (let i = pageIndex; i < pageIndex + 5; i++) {
     let item = {
@@ -59,7 +80,7 @@ exports.category = async function (req, res) {
   }
 
   res.render("products/views/category.hbs", {
-    colorsBrandsListProduct,
+    attrsProductList,
     productToShow,
     length,
     pageBar,
@@ -71,26 +92,23 @@ exports.category = async function (req, res) {
 exports.getProductById = async function (req, res) {
   const product = await productService.productByID(req.params.productId);
   res.render("products/views/detail.hbs", {
-    product
-  })
+    product,
+  });
 };
 
-
 exports.renderDetail = async function (req, res) {
-  const product = await productService.productBySlug(req.params.slug)
-  const comments = await productService.getProductComment(product._id)
-  comments.sort((a, b) => (new Date(b.createAt) - new Date(a.createAt)));
+  const product = await productService.productBySlug(req.params.slug);
+  const relatedProducts = await productService.getRelatedProducts(product.brand, product._id)
+  const comments = await productService.getProductComment(product._id);
+  comments.sort((a, b) => new Date(b.createAt) - new Date(a.createAt));
 
   const size = comments.length;
 
-
-  let {
-    pageComment: page
-  } = req.query;
+  let { pageComment: page } = req.query;
   if (!page) page = 1;
 
   // page bar
-  const pageIndex = Math.floor((page-1) / 5) * 5 + 1;
+  const pageIndex = Math.floor((page - 1) / 5) * 5 + 1;
   let pageBar = [];
   for (let i = pageIndex; i < pageIndex + 5; i++) {
     let item = {
@@ -126,27 +144,31 @@ exports.renderDetail = async function (req, res) {
   commentsToShow.map((comment) => {
     comment.createAt = timeSince(comment.createAt);
     return comment;
-  })
+  });
 
-  res.render('products/views/detail.hbs', {
+  res.render("products/views/detail.hbs", {
     product,
+    relatedProducts,
     commentsToShow,
     size,
     pageBar,
     previous,
     page,
     next,
-  })
-}
+  });
+};
 
 exports.postComment = async (req, res, next) => {
-  const comment = await productService.postComment(req.body.name, req.body.productId, req.body.content);
+  const comment = await productService.postComment(
+    req.body.name,
+    req.body.productId,
+    req.body.content
+  );
   comment.slug = req.body.slug;
   res.status(200).json(comment);
-}
+};
 
 function timeSince(date) {
-
   var seconds = Math.floor((new Date() - date) / 1000);
 
   var interval = seconds / 31536000;

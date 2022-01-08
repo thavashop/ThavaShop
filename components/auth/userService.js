@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const randomstring = require("randomstring");
 
 const userModel = require('../../models/User');
-const sgMail = require('../../service/sendGrid')
+const mailTransporter = require('../../service/nodemailer')
 
 exports.findByUsername = (username) => userModel.findOne({
     username: username
@@ -34,23 +34,21 @@ exports.register = async (username, email, password) => {
     });
     // send email
     const msg = {
-        to: 'vanpronhat@gmail.com', // Change to your recipient
+        to: email, // Change to your recipient
         from: process.env.EMAIL_SENDER, // Change to your verified sender
         subject: 'ThavaShop account email activation',
-        text: 'and easy to do anywhere, even with Node.js',
         html: `<h1>Thanks for register your account with ThavaShop</h1>
         <p>Please activate your account <a
         href="${process.env.DOMAIN_NAME}/activate?username=${username}&activation-string=${activationString}"
         >Click here!</a></p>`,
     }
-    sgMail
-        .send(msg)
-        .then(() => {
-            console.log('Email sent')
-        })
-        .catch((error) => {
-            console.error(error)
-        })
+    mailTransporter.sendMail(msg, function (err, data) {
+        if (err) {
+            console.log(err.message);
+        } else {
+            console.log('Email sent successfully');
+        }
+    });
 }
 
 exports.activate = async (username, activationString) => {
@@ -98,3 +96,8 @@ exports.changePassword = async (id, password) => {
         console.log(error);
     }
 }
+
+exports.findByUsernameAndAS = (username, activationString) => userModel.findOne({
+    username: username,
+    activationString: activationString
+}).lean();
