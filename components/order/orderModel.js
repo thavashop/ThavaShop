@@ -19,6 +19,8 @@ const schema = mongoose.Schema({
         default: 10
     },
     paymentType: String,
+    delivery: String,
+    address: Object,
     date: {
         type: Date,
         default: Date.now()

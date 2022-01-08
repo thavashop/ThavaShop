@@ -39,13 +39,16 @@
               our customer service center is working for you 24/7.</p>
             <hr>
             <div class="table-responsive">
+              {{#if orders}}
               <table class="table table-hover">
                 <thead>
                   <tr>
                     <th>Order</th>
                     <th>Date</th>
-                    <th>Total</th>
+                    <th>Delivery type</th>
+                    <th>SubTotal</th>
                     <th>Status</th>
+                    <th>Payment type</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -54,18 +57,20 @@
                   <tr>
                     <th>{{_id}}</th>
                     <td>{{date}}</td>
-                    <td>$ {{total}}</td>
-                    <td><span class=
-                    {{#if (equals status 'delivered')}}"badge badge-success"
-                    {{else}}
-                        {{#if (equals status 'not delivered')}}"badge badge-warning"
-                        {{else}}"badge badge-info"{{/if}}
-                    {{/if}}>{{status}}</span></td>
+                    <td>{{delivery}}</td>
+                    <td>${{subtotal}}</td>
+                    <td><span class={{#if (equals status 'delivered' )}}"badge badge-success" {{else}} {{#if (equals
+                        status 'not delivered' )}}"badge badge-warning" {{else}}"badge badge-info"{{/if}}
+                        {{/if}}>{{status}}</span></td>
+                    <td>{{paymentType}}</td>
                     <td><a href="/order/{{_id}}" class="btn btn-primary btn-sm">View</a></td>
-                  </tr>                    
-                  {{/each}}                  
+                  </tr>
+                  {{/each}}
                 </tbody>
               </table>
+              {{else}}
+              <h1>Looks like you haven't order anything yet.</h1>
+              {{/if}}
             </div>
           </div>
         </div>

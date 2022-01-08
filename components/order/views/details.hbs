@@ -54,7 +54,7 @@
                   <tr>
                     <td><a href="/category/product/{{slug}}"><img src="{{image}}" alt="product image"></a></td>
                     <td><a href="/category/product/{{slug}}">{{name}}</a></td>
-                    <td>{{amount}}</td>
+                    <td>{{quantity}}</td>
                     <td>${{price}}</td>
                     <td colspan="2">${{total}}</td>
                   </tr>
@@ -72,7 +72,7 @@
                   </tr>
                   <tr>
                     <th colspan="5" class="text-right">Tax</th>
-                    <th>$0.00</th>
+                    <th>${{tax}}</th>
                   </tr>
                   <tr>
                     <th colspan="5" class="text-right">Total</th>
@@ -84,13 +84,19 @@
             </div>
             <!-- /.table-responsive-->
             <div class="row addresses">
+              {{#with order}}
               <div class="col-lg-6">
-                <h2>Invoice address</h2>
-                <p>John Brown<br>13/25 New Avenue<br>New Heaven<br>45Y 73J<br>England<br>Great Britain</p>
+                <h2>Delivery type</h2>
+                <p>{{delivery}}</p>
+                <h2>Payment type</h2>
+                <p>{{paymentType}}</p>
               </div>
               <div class="col-lg-6">
                 <h2>Shipping address</h2>
-                <p>John Brown<br>13/25 New Avenue<br>New Heaven<br>45Y 73J<br>England<br>Great Britain</p>
+                {{#with address}}
+                <p>{{street}}<br>{{city}}<br>{{country}}</p>
+                {{/with}}
+              {{/with}}
               </div>
             </div>
           </div>
