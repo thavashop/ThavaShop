@@ -18,20 +18,23 @@ exports.category = async function (req, res) {
   }
 
   //save filter to cookie if filter is not empty
-  if (Object.keys(filter).length !== 0) {
-    res.cookie("filter", filter);
-  }
-
+  // if (Object.keys(filter).length !== 0) {
+  //   res.cookie("filter", filter);
+  // }
+  let field, type
   if (sortBy) {
-    if (req.cookies?.filter) {
+    // if (req.cookies?.filter) {
       //merge filter with cookie filter
-      filter = { ...req.cookies.filter, ...{ [sortBy]: 1 } };
-    }
+    const sortValue = sortBy.split('_')
+    field = sortValue[0]
+    type = sortValue[1]
+      // filter = { ...filter, ...{ field: type } };
+    // }
   }
-  console.log(filter);
 
   const products = await productService.filter(
-    sortBy?.toLowerCase() ?? "price",
+    field,
+    type,
     filter
   );
 

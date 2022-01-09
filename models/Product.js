@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const slugGenerator = require('mongoose-slug-generator');
+mongoose.plugin(slugGenerator);
 
 const schema = mongoose.Schema({
   name: {
@@ -18,7 +20,10 @@ const schema = mongoose.Schema({
   size: Array,
   imageType: String,
   description: String,
-  slug: String,
+  slug: {
+    type: String,
+    slug: 'name',
+  },
   sales: {
     type: Number,
     default: 0

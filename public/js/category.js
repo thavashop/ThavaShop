@@ -4,7 +4,7 @@ $(document).ready(function () {
   new URLSearchParams(window.location.search).forEach((value, key) => {
     //populate selected select box
     if (key.includes("sortBy")) {
-      $(`select[name="sortBy"] option:contains(${value})`).prop({
+      $(`select[name="sortBy"] option[value="${value}"]`).prop({
         selected: true,
       });
     }

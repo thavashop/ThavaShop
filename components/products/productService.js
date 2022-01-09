@@ -1,9 +1,9 @@
 const Product = require("../../models/Product");
 const Comment = require("../../models/Comment");
 
-exports.filter = function (sortBy, filter) {
+exports.filter = function (sortBy, type, filter) {
   return Product.find(filter)
-    .sort({ [sortBy]: 1 })
+    .sort({ [sortBy]: type })
     .lean();
 };
 
