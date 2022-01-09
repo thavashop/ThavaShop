@@ -23,7 +23,7 @@ inputNumEl.bind("input", function () {
   const beforeQuantity = this.getAttribute("data-quantity");
 
   //assign the value of the input to the quantity variable
-  $('.table-responsive #${productId}').text(
+  $(`.table-responsive #${productId}`).text(
     "$" + (self["value"] * self.getAttribute("data-price")).toFixed(2)
   );
 
