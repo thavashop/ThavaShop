@@ -6,10 +6,10 @@
                     <h1>Your account is not activated yet.</h1>
                     <h1> Please check your activation with email {{email}}</h1>
                     <form action="/resendEmail" method="post">
-                    <input type="hidden" name="username" value="{{username}}">
-                        <button type="submit" class="btn btn-primary">Resend email</button>
+                        <input type="hidden" name="username" value="{{username}}">
+                        <button id="resend" type="submit" class="btn btn-primary">Resend email</button>
                     </form>
-
+                    <br>
                 </div>
             </div>
         </div>

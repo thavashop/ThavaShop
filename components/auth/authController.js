@@ -161,8 +161,8 @@ exports.resendEmail = async (req, res) => {
             console.log('Email sent successfully');
         }
     });
-    req.flash("Sent", "Email sent")
-    res.redirect('/login')
+    const email = true
+    res.render('auth/views/login', {email})
 }
 
 exports.sendMailForgotPassword = async (req, res) => {
@@ -184,8 +184,8 @@ exports.sendMailForgotPassword = async (req, res) => {
             console.log('Email sent successfully');
         }
     });
-    req.flash("Sent", "Email sent")
-    res.redirect('/login')
+    const email = true
+    res.render('auth/views/login', {email})
 }
 
 exports.resetPassword = async (req, res) => {

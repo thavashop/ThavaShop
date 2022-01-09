@@ -2,7 +2,7 @@ const { everySize: productSize } = require("../../models/Product");
 const productService = require("./productService");
 
 exports.category = async function (req, res) {
-  let { page, sortBy, brand, color, size, material } = req.query;
+  let { page, sortBy, brand, color, size, material, search } = req.query;
   if (!page) page = 1;
 
   let filter = {
@@ -32,11 +32,16 @@ exports.category = async function (req, res) {
     // }
   }
 
-  const products = await productService.filter(
+  let products = await productService.filter(
     field,
     type,
     filter
   );
+
+  if (search) {
+    const searchProduct = products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()))
+    products = searchProduct
+  }
 
   const allProducts = await productService.list();
 
@@ -102,6 +107,7 @@ exports.getProductById = async function (req, res) {
 
 exports.renderDetail = async function (req, res) {
   const product = await productService.productBySlug(req.params.slug);
+  const relatedProducts = await productService.getRelatedProducts(product.brand, product._id)
   const comments = await productService.getProductComment(product._id);
   comments.sort((a, b) => new Date(b.createAt) - new Date(a.createAt));
 
@@ -151,6 +157,7 @@ exports.renderDetail = async function (req, res) {
 
   res.render("products/views/detail.hbs", {
     product,
+    relatedProducts,
     commentsToShow,
     size,
     pageBar,

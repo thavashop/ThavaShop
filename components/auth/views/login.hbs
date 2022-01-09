@@ -61,6 +61,10 @@
                 <div style="color: red;">Username or password is incorrect</div>
                 <br>
                 {{/if}}
+                {{#if email}}
+                <div style="color: green;">Check your email!</div>
+                <br>
+                {{/if}}
                   <div class="form-group">
                     <label for="email">Username</label>
                     <input id="email" type="text" class="form-control" name="username">
