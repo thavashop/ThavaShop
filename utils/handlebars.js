@@ -13,6 +13,7 @@ const helpers = {
   calcTotal(price, quantity) {
     return (price * quantity).toFixed(2);
   },
+  equals(a, b) {return (a === b)},
 };
 
 module.exports.helpers = helpers;

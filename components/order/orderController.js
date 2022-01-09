@@ -61,7 +61,7 @@ exports.checkoutPayment = async (req, res) => {
                     quantity: entry.quantity,
                 })),
                 success_url: `${process.env.DOMAIN_NAME}/order/success?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${process.env.DOMAIN_NAME}/cart`,
+                cancel_url: `${process.env.DOMAIN_NAME}/order/checkout/payment`,
                 customer_email: customer.email
             })
             res.redirect(session.url)
@@ -77,8 +77,8 @@ exports.renderCheckoutReview = async (req, res) => {
     const entries = cart.products.map(entry => {
         const { productId: product } = entry
         const { quantity: q } = entry
-        const t = product.price * q
-        sub += t
+        const t = Number(product.price * q).toFixed(2)
+        sub += Number(t)
         return { ...product, quantity: q, total: product.price * q }
     })
     res.cookie('subtotal', sub)
