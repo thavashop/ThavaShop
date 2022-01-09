@@ -58,12 +58,12 @@
               <form method="GET" action="/category">
                 <div class="form-group">
                   {{#each attrsProductList.brands}}
-                    <div class="checkbox">
-                      <label for="{{this}}">
-                        <input type="checkbox" name="brand" value="{{this}}"> {{this}}
-                      </label>
-                    </div>
-                     {{/each }}
+                  <div class="checkbox">
+                    <label for="{{this}}">
+                      <input type="checkbox" name="brand" value="{{this}}"> {{this}}
+                    </label>
+                  </div>
+                  {{/each }}
                 </div>
                 <button class="btn btn-default btn-sm btn-primary"><i class="fa fa-pencil"></i> Apply</button>
               </form>
@@ -75,17 +75,18 @@
                     class="fa fa-times-circle"></i> Clear</a></h3>
             </div>
             <div class="card-body">
-              <form method="GET" action="/category" >
+              <form method="GET" action="/category">
                 <div class="form-group">
                   {{#each attrsProductList.colors}}
-                    <div class="checkbox">
-                      <label for="{{this}}">
-                        <input type="checkbox" name="color" value="{{this}}"><span class="colour"></span> {{this}}
-                      </label>
-                    </div>
+                  <div class="checkbox">
+                    <label for="{{this}}">
+                      <input type="checkbox" name="color" value="{{this}}"><span class="colour"></span> {{this}}
+                    </label>
+                  </div>
                   {{/each }}
                 </div>
-                <button type="submit" class="btn btn-default btn-sm btn-primary"><i class="fa fa-pencil" ></i> Apply</button>
+                <button type="submit" class="btn btn-default btn-sm btn-primary"><i class="fa fa-pencil"></i>
+                  Apply</button>
               </form>
             </div>
           </div>
@@ -98,88 +99,100 @@
           </div>
 
           <div class="box">
-              <div class="card-header">
-                  <h4 class="card-title">Search</h4>
-              </div>
-              <div class="card-body">
-                  <form id="form-search" class="form form-vertical" action="/category" method="GET">
-                      <div class="row">
-                          <div class="col-3">
-                              <div class="mb-1">
-                                  <label class="form-label" for="first-name-icon">Brand</label>
-                                  <div class="input-group input-group-merge">
-                                      <span class="input-group-text"><img src="https://img.icons8.com/material-outlined/24/000000/company.png"/></span>
-                                     <select name="brand" class="form-control">
-                                      <option disabled selected value>None</option>
-                                      {{#each attrsProductList.brands}}
-                                        <option>{{this}}</option>
-                                      {{/each }}
-                                     </select>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-3">
-                              <div class="mb-1">
-                                  <label class="form-label" for="email-id-icon">Color</label>
-                                  <div class="input-group input-group-merge">
-                                      <span class="input-group-text"><img src="https://img.icons8.com/material-outlined/24/000000/afro-pick.png"/></span>
-                                      <select name="color" class="form-control">
-                                        <option disabled selected value>None</option>
-                                        {{#each attrsProductList.colors}}
-                                          <option>{{this}}</option>
-                                      {{/each }}
-                                     </select>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-3">
-                              <div class="mb-1">
-                                  <label class="form-label" for="contact-info-icon">Size</label>
-                                  <div class="input-group input-group-merge">
-                                      <span class="input-group-text"><img src="https://img.icons8.com/material-outlined/24/000000/hanger.png"/></span>
-                                      <select name="size" class="form-control">
-                                        <option disabled selected value>None</option>
-                                       {{#each attrsProductList.sizes}}
-                                        <option>{{this}}</option>
-                                      {{/each }}
-                                     </select>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-3">
-                              <div class="mb-1">
-                                  <label class="form-label" for="password-icon">Material</label>
-                                  <div class="input-group input-group-merge">
-                                      <span class="input-group-text"><img src="https://img.icons8.com/material-outlined/24/000000/t-shirt.png"/></span>
-                                      <select name="material" class="form-control">
-                                        <option disabled selected value>None</option>
-                                       {{#each attrsProductList.materials}}
-                                        <option>{{this}}</option>
-                                      {{/each }}
-                                     </select>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                          <div class="d-flex justify-content-end" >
-                              <button type="submit" class="btn btn-default btn-sm btn-primary">Search</button>
-                          </div>
-                  </form>
-              </div>
+            <div class="card-header">
+              <h4 class="card-title">Search</h4>
             </div>
+            <div class="card-body">
+              <form id="form-search" class="form form-vertical" action="/category" method="GET">
+                 <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Search</span>
+                  </div>
+                  <input type="text" class="form-control"  name="search" placeholder="Search name.." aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <div class="mb-1">
+                      <label class="form-label" for="first-name-icon">Brand</label>
+                      <div class="input-group input-group-merge">
+                        <span class="input-group-text"><img
+                            src="https://img.icons8.com/material-outlined/24/000000/company.png" /></span>
+                        <select name="brand" class="form-control">
+                          <option selected value>None</option>
+                          {{#each attrsProductList.brands}}
+                          <option>{{this}}</option>
+                          {{/each }}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="mb-1">
+                      <label class="form-label" for="email-id-icon">Color</label>
+                      <div class="input-group input-group-merge">
+                        <span class="input-group-text"><img
+                            src="https://img.icons8.com/material-outlined/24/000000/afro-pick.png" /></span>
+                        <select name="color" class="form-control">
+                          <option selected value>None</option>
+                          {{#each attrsProductList.colors}}
+                          <option>{{this}}</option>
+                          {{/each }}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="mb-1">
+                      <label class="form-label" for="contact-info-icon">Size</label>
+                      <div class="input-group input-group-merge">
+                        <span class="input-group-text"><img
+                            src="https://img.icons8.com/material-outlined/24/000000/hanger.png" /></span>
+                        <select name="size" class="form-control">
+                          <option selected value>None</option>
+                          {{#each attrsProductList.sizes}}
+                          <option>{{this}}</option>
+                          {{/each }}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="mb-1">
+                      <label class="form-label" for="password-icon">Material</label>
+                      <div class="input-group input-group-merge">
+                        <span class="input-group-text"><img
+                            src="https://img.icons8.com/material-outlined/24/000000/t-shirt.png" /></span>
+                        <select name="material" class="form-control">
+                          <option selected value>None</option>
+                          {{#each attrsProductList.materials}}
+                          <option>{{this}}</option>
+                          {{/each }}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="btn btn-default btn-sm btn-primary">Search</button>
+                </div>
+              </form>
+            </div>
+          </div>
           <div class="box info-bar">
             <div class="row">
               <div class="col-md-12 col-lg-4 products-showing">Showing <strong>{{productToShow.length}}</strong> of
                 <strong>{{length}}</strong>
-                products</div>
+                products
+              </div>
               <div class="col-md-12 col-lg-7 products-number-sort">
-                <form class="form-inline d-block d-lg-flex justify-content-between flex-column flex-md-row" method="GET" action="/category">
-                  {{!-- <div class="products-number"><strong>Show</strong><a href="#" class="btn btn-sm btn-primary">12</a><a
-                      href="#" class="btn btn-outline-secondary btn-sm">24</a><a href="#"
-                      class="btn btn-outline-secondary btn-sm">All</a><span>products</span>
+                <form class="form-inline d-block d-lg-flex justify-content-between flex-column flex-md-row" method="GET"
+                  action="/category">
+                  {{!-- <div class="products-number"><strong>Show</strong><a href="#"
+                      class="btn btn-sm btn-primary">12</a><a href="#" class="btn btn-outline-secondary btn-sm">24</a><a
+                      href="#" class="btn btn-outline-secondary btn-sm">All</a><span>products</span>
                   </div> --}}
                   <div class="products-sort-by mt-2 mt-lg-0"><strong>Sort by</strong>
-                    <select name="sortBy" class="form-control" onchange="this.form.submit()" >
+                    <select name="sortBy" class="form-control" onchange="this.form.submit()">
                       <option>None</option>
                       <option value="price_1">Price Ascending</option>
                       <option value="price_-1">Price Descending</option>
@@ -197,21 +210,26 @@
               <div class="product">
                 <div class="flip-container">
                   <div class="flipper">
-                    <div class="front "><a href="/category/product/{{slug}}"><img src="{{image}}" alt="" class="img-fluid product-img"></a>
+                    <div class="front "><a href="/category/product/{{slug}}"><img src="{{image}}" alt=""
+                          class="img-fluid product-img"></a>
                     </div>
-                    <div class="back "><a href="/category/product/{{slug}}"><img src="{{image2}}" alt="" class="img-fluid product-img"></a>
+                    <div class="back "><a href="/category/product/{{slug}}"><img src="{{image2}}" alt=""
+                          class="img-fluid product-img"></a>
                     </div>
                   </div>
-                </div><a href="/category/product/{{slug}}" class="invisible"><img src="{{image}}" alt="" class="img-fluid product-img"></a>
+                </div><a href="/category/product/{{slug}}" class="invisible"><img src="{{image}}" alt=""
+                    class="img-fluid product-img"></a>
                 <div class="text">
                   <h3><a href="/category/product/{{slug}}">{{name}}</a></h3>
                   <p class="price">
                     <del></del>${{price}}
                   </p>
-                  <p class="buttons"><a href="/category/product/{{slug}}" class="btn btn-outline-secondary">View detail</a>
+                  <p class="buttons"><a href="/category/product/{{slug}}" class="btn btn-outline-secondary">View
+                      detail</a>
                   <form action="/cart" method="post" class="row justify-content-center">
-                      <button class="btn btn-primary" type="submit"><i class="fa fa-shopping-cart"></i>Add to Cart</button>
-                      <input type="hidden" name="productId" value="{{_id}}">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-shopping-cart"></i>Add to
+                      Cart</button>
+                    <input type="hidden" name="productId" value="{{_id}}">
                   </form>
                 </div>
                 <!-- /.text-->
@@ -225,24 +243,24 @@
                 more</a></p> --}}
             <nav aria-label="Page navigation example" class="d-flex justify-content-center">
               <ul class="pagination">
-                  {{#if previous.isHas}}
-                  <li class="page-item"><a href="/category?page={{previous.page}}" aria-label="Previous"
-                      class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
-                  {{/if}}
-                  {{#each pageBar}}
-                  <li class="page-item {{active}}">
-                    <a href="/category?{{extractParams params}}&page={{page}}" class="page-link">{{page}}</a>
-                  </li>
-                  {{/each}}
-                  {{!-- <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                  <li class="page-item"><a href="#" class="page-link">2</a></li>
-                  <li class="page-item"><a href="#" class="page-link">3</a></li>
-                  <li class="page-item"><a href="#" class="page-link">4</a></li>
-                  <li class="page-item"><a href="#" class="page-link">5</a></li> --}}
-                  {{#if next.isHas}}
-                  <li class="page-item"><a href="/category?page={{next.page}}" aria-label="Next" class="page-link"><span
-                        aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
-                  {{/if}}
+                {{#if previous.isHas}}
+                <li class="page-item"><a href="/category?page={{previous.page}}" aria-label="Previous"
+                    class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                {{/if}}
+                {{#each pageBar}}
+                <li class="page-item {{active}}">
+                  <a href="/category?{{extractParams params}}&page={{page}}" class="page-link">{{page}}</a>
+                </li>
+                {{/each}}
+                {{!-- <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                <li class="page-item"><a href="#" class="page-link">3</a></li>
+                <li class="page-item"><a href="#" class="page-link">4</a></li>
+                <li class="page-item"><a href="#" class="page-link">5</a></li> --}}
+                {{#if next.isHas}}
+                <li class="page-item"><a href="/category?page={{next.page}}" aria-label="Next" class="page-link"><span
+                      aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                {{/if}}
               </ul>
             </nav>
           </div>
