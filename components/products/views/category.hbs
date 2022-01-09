@@ -186,11 +186,25 @@
               </div>
               <div class="col-md-12 col-lg-7 products-number-sort">
                 <form class="form-inline d-block d-lg-flex justify-content-between flex-column flex-md-row" method="GET"
-                  action="/category">
+                  action="?">
                   {{!-- <div class="products-number"><strong>Show</strong><a href="#"
                       class="btn btn-sm btn-primary">12</a><a href="#" class="btn btn-outline-secondary btn-sm">24</a><a
                       href="#" class="btn btn-outline-secondary btn-sm">All</a><span>products</span>
                   </div> --}}
+                  {{#if searchAttr}}
+                    {{#each searchAttr.brand}}
+                    <input type="hidden" name="brand" value="{{this}}">
+                    {{/each}}
+                    {{#each searchAttr.color}}
+                    <input type="hidden" name="color" value="{{this}}">
+                    {{/each}}
+                    {{#each searchAttr.size}}
+                    <input type="hidden" name="size" value="{{this}}">
+                    {{/each}}
+                    {{#each searchAttr.material}}
+                    <input type="hidden" name="material" value="{{this}}">
+                    {{/each}}
+                  {{/if}}
                   <div class="products-sort-by mt-2 mt-lg-0"><strong>Sort by</strong>
                     <select name="sortBy" class="form-control" onchange="this.form.submit()">
                       <option>None</option>

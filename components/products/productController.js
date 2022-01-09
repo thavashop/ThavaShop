@@ -12,24 +12,12 @@ exports.category = async function (req, res) {
     ...(material ? { material } : {}),
   };
 
-  //clear cookie
-  if (Object.keys(filter).length === 0 && !sortBy) {
-    res.clearCookie("filter");
-  }
 
-  //save filter to cookie if filter is not empty
-  // if (Object.keys(filter).length !== 0) {
-  //   res.cookie("filter", filter);
-  // }
   let field, type
   if (sortBy) {
-    // if (req.cookies?.filter) {
-      //merge filter with cookie filter
     const sortValue = sortBy.split('_')
     field = sortValue[0]
     type = sortValue[1]
-      // filter = { ...filter, ...{ field: type } };
-    // }
   }
 
   let products = await productService.filter(
@@ -88,7 +76,20 @@ exports.category = async function (req, res) {
     if (products[i]) productToShow.push(products[i]);
   }
 
+  const brandAttr = Array.isArray(brand) ? brand : [brand]
+  const colorAttr = Array.isArray(color) ? color : [color]
+  const sizeAttr = Array.isArray(size) ? size : [size]
+  const materialAttr = Array.isArray(material) ? material : [material]
+
+  let searchAttr = {
+    'brand': brandAttr ? [...brandAttr] : [] ,
+    'color': colorAttr ? [...colorAttr] : [] ,
+    'size': sizeAttr ? [...sizeAttr] : [] ,
+    'material': materialAttr ? [...materialAttr] : [] ,
+  };
+
   res.render("products/views/category.hbs", {
+    searchAttr,
     attrsProductList,
     productToShow,
     length,
