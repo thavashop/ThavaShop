@@ -2,7 +2,7 @@ const { everySize: productSize } = require("../../models/Product");
 const productService = require("./productService");
 
 exports.category = async function (req, res) {
-  let { page, sortBy, brand, color, size, material, search } = req.query;
+  let { page, sortBy, brand, color, size, material } = req.query;
   if (!page) page = 1;
 
   let filter = {
@@ -12,6 +12,11 @@ exports.category = async function (req, res) {
     ...(material ? { material } : {}),
   };
 
+  //clear cookie
+  if (Object.keys(filter).length === 0 && !sortBy) {
+    res.clearCookie("filter");
+  }
+
   //save filter to cookie if filter is not empty
   if (Object.keys(filter).length !== 0) {
     res.cookie("filter", filter);
@@ -20,19 +25,15 @@ exports.category = async function (req, res) {
   if (sortBy) {
     if (req.cookies?.filter) {
       //merge filter with cookie filter
-      filter = { ...req.cookies.filter, ...(sortBy ? { [sortBy]: 1 } : {}) };
+      filter = { ...req.cookies.filter, ...{ [sortBy]: 1 } };
     }
   }
+  console.log(filter);
 
-  let products = await productService.filter(
+  const products = await productService.filter(
     sortBy?.toLowerCase() ?? "price",
     filter
   );
-
-  if (search) {
-    const searchProduct = products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()))
-    products = searchProduct
-  }
 
   const allProducts = await productService.list();
 
@@ -98,7 +99,6 @@ exports.getProductById = async function (req, res) {
 
 exports.renderDetail = async function (req, res) {
   const product = await productService.productBySlug(req.params.slug);
-  const relatedProducts = await productService.getRelatedProducts(product.brand, product._id)
   const comments = await productService.getProductComment(product._id);
   comments.sort((a, b) => new Date(b.createAt) - new Date(a.createAt));
 
@@ -148,7 +148,6 @@ exports.renderDetail = async function (req, res) {
 
   res.render("products/views/detail.hbs", {
     product,
-    relatedProducts,
     commentsToShow,
     size,
     pageBar,

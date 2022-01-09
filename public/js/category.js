@@ -1,3 +1,5 @@
+let filterCookie;
+
 $(document).ready(function () {
   new URLSearchParams(window.location.search).forEach((value, key) => {
     //populate selected select box
@@ -33,4 +35,18 @@ $(document).ready(function () {
       });
     }
   });
+  populateSelected();
 });
+
+function populateSelected() {
+  if ($.cookie("filter")) {
+    filterCookie = JSON.parse($.cookie("filter").slice(2));
+  }
+  console.log(filterCookie);
+  for (const key in filterCookie) {
+    if (filterCookie.hasOwnProperty(key)) {
+      const element = filterCookie[key];
+      $(`#form-search select[name='${key}']`).val(`${element}`).change();
+    }
+  }
+}
