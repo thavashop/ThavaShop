@@ -2,6 +2,20 @@ var express = require('express');
 var router = express.Router();
 const controller = require('./orderController')
 
+// checkout
+router.route('/checkout/address')
+    .get(controller.renderCheckoutAddress)
+    .post(controller.checkoutAddress)
+router.route('/checkout/delivery')
+    .get(controller.renderCheckoutDelivery)
+    .post(controller.checkoutDelivery)
+router.route('/checkout/payment')
+    .get(controller.renderCheckoutPayment)
+    .post(controller.checkoutPayment)
+router.route('/checkout/review')
+    .get(controller.renderCheckoutReview)
+    .post(controller.checkoutReview)
+
 // order history
 router.get('/', controller.history);
 

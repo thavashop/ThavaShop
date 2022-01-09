@@ -10,7 +10,7 @@ const schema = mongoose.Schema({
         type: ObjectId, 
         required: true
     },
-    amount: {
+    quantity: {
         type: Number
     }
 }, {collection: 'orderDetails'});

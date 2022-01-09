@@ -5,6 +5,10 @@ exports.getCart = (customer) => {
     .lean();
 };
 
+exports.getCartWithoutPopulate = (customer) => {
+  return Cart.findOne({ customer: customer }).lean();
+};
+
 exports.addOrUpdateCart = (customer, basket) => {
   return Cart.findOne({ customer: customer }).then((cart) => {
     if (cart) {

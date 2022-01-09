@@ -5,8 +5,8 @@ exports.new = () => new Order()
 
 exports.findById = (id) => Order.findById(id)
 
-exports.add = (customer, details, subtotal, paymentType) => {
-    const order = new Order({customer, details, subtotal, paymentType})
+exports.add = (customer, details, subtotal, paymentType, delivery, address) => {
+    const order = new Order({customer, details, subtotal, paymentType , delivery, address})
     order.save()
 }
 
@@ -20,9 +20,9 @@ exports.getProductEntries = async (details) => {
             entries.push({
                 image: product.image,
                 name: product.name,
-                amount: entry.amount,
+                quantity: entry.quantity,
                 price: product.price,
-                total: entry.amount * product.price,
+                total: Number(entry.quantity * product.price).toFixed(2),
                 slug: product.slug,
             })
         } catch (err) {
