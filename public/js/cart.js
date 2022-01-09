@@ -23,7 +23,7 @@ inputNumEl.bind("input", function () {
   const beforeQuantity = this.getAttribute("data-quantity");
 
   //assign the value of the input to the quantity variable
-  $(.table-responsive #${productId}).text(
+  $('.table-responsive #${productId}').text(
     "$" + (self["value"] * self.getAttribute("data-price")).toFixed(2)
   );
 
@@ -58,7 +58,10 @@ const updateCart = (productId, quantity) => {
   $.ajax({
     type: "POST",
     url: "/cart",
-    data: { productId, quantity },
+    data: {
+      productId,
+      quantity
+    },
     success: function (data) {
       console.log("Post cart");
     },
@@ -67,5 +70,3 @@ const updateCart = (productId, quantity) => {
     },
   });
 };
-Viết cho Huỳnh Hữu Khánh
-Aa
