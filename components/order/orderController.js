@@ -1,13 +1,16 @@
 const orderService = require('./orderService')
+const userService = require('../auth/userService')
 const cartService = require('../cart/cartService')
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY)
 
 exports.renderCheckoutAddress = async (req, res) => {
-    res.render('order/views/checkoutAddress', { account: req.user, address: req.cookies.address ?? {} })
+    res.render('order/views/checkoutAddress', { account: req.user })
 }
 
 exports.checkoutAddress = async (req, res) => {
-    res.cookie('address', req.body)
+    const {street, city, country} = req.body
+    req.session.passport.user = await userService.edit(req.user._id, req.body)
+    res.cookie('address', {street, city, country})
     res.redirect('/order/checkout/delivery')
 }
 
@@ -52,7 +55,7 @@ exports.checkoutPayment = async (req, res) => {
                         currency: 'usd',
                         product_data: {
                             name: entry.productId.name,
-                            images: [entry.productId.image],
+                            images: entry.productId.image,
                             description: entry.productId.description,
                             metadata: { id: `${entry.productId._id}` },
                         },

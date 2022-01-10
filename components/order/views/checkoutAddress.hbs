@@ -29,13 +29,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="firstname">Firstname</label>
-                      <input value="{{firstname}}" id="firstname" type="text" class="form-control" disabled="disabled">
+                      <input value="{{firstname}}" id="firstname" type="text" class="form-control" name='firstname'>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="lastname">Lastname</label>
-                      <input value="{{lastname}}" id="lastname" type="text" class="form-control" disabled="disabled">
+                      <input value="{{lastname}}" id="lastname" type="text" class="form-control" name='lastname'>
                     </div>
                   </div>
                 </div>
@@ -44,18 +44,16 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="phone">Telephone</label>
-                      <input value="{{phone}}" id="phone" type="text" class="form-control" disabled="disabled"> 
+                      <input value="{{phone}}" id="phone" type="text" class="form-control" name='phone'> 
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="email">Email</label>
-                      <input value="{{email}}" id="email" type="text" class="form-control" disabled="disabled">
+                      <input value="{{email}}" id="email" type="text" class="form-control" name='email'>
                     </div>
                   </div>
                 </div>
-                {{/with}}
-                {{#with address}}
                 <!-- /.row-->
                 <div class="row">
                   <div class="col-md-6">

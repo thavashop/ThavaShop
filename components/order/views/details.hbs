@@ -52,7 +52,7 @@
                 <tbody>
                   {{#each products }}
                   <tr>
-                    <td><a href="/category/product/{{slug}}"><img src="{{image}}" alt="product image"></a></td>
+                    <td><a href="/category/product/{{slug}}"><img src="{{index image 0}}" alt="product image"></a></td>
                     <td><a href="/category/product/{{slug}}">{{name}}</a></td>
                     <td>{{quantity}}</td>
                     <td>${{price}}</td>
