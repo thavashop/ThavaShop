@@ -69,10 +69,10 @@
                 <div class="product">
                   <div class="flip-container">
                     <div class="flipper">
-                      <div class="front"><a href="/category/product/{{slug}}"><img src="{{image}}" alt="" class="img-fluid"></a></div>
-                      <div class="back"><a href="/category/product/{{slug}}"><img src="{{image2}}" alt="" class="img-fluid"></a></div>
+                      <div class="front"><a href="/category/product/{{slug}}"><img src="{{index image 0}}" alt="" class="img-fluid"></a></div>
+                      <div class="back"><a href="/category/product/{{slug}}"><img src="{{index image 1}}" alt="" class="img-fluid"></a></div>
                     </div>
-                  </div><a href="/category/product/{{slug}}" class="invisible"><img src="{{image}}" alt="" class="img-fluid"></a>
+                  </div><a href="/category/product/{{slug}}" class="invisible"><img src="{{index image 0}}" alt="" class="img-fluid"></a>
                   <div class="text">
                     <h3><a href="/category/product/{{slug}}">{{name}}</a></h3>
                     <p class="price">
