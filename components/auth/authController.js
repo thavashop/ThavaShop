@@ -69,10 +69,37 @@ exports.activate = async (req, res) => {
     const result = await userService.activate(username, activationString)
     if (result) {
         const user = await userService.findByUsername(username)
-        req.login(user, function (err) {
-            if (err) return next(err);
-            return res.redirect('/')
-        })
+        req.logIn(user, async function (err) {
+            if (err) {
+              return next(err);
+            }
+
+            const cartCookie = req.cookies?.cart;
+            if (cartCookie) {
+              //add cart from cookie to db
+              console.log(cartCookie);
+              //map productId in cookie cart to productId in db
+              const cartInCookie = cartCookie.map((item) => {
+                return {
+                  productId: ObjectId(item.productId),
+                  quantity: item.quantity,
+                };
+              });
+              const cart = await cartService.addOrUpdateCart(user._id, cartInCookie);
+              res.cookie("cartLength", cart?.products?.length ?? 0);
+              //delete cookie
+              res.clearCookie("cart");
+            } else {
+              const cart = await cartService.getCart(user._id);
+              res.cookie("cartLength", cart?.products?.length ?? 0);
+
+            }
+
+            const to = req.cookies.redirectAfterLogin
+            res.clearCookie('redirectAfterLogin')
+            return res.redirect(to ? to : '/')
+            // return res.redirect("/");
+          });
     } else {
         return res.redirect('/')
     }
