@@ -13,11 +13,12 @@ const schema = mongoose.Schema({
   },
   image: Array,
   material: String,
+  gender: String,
+  type: String,
   care: String,
   brand: String,
   color: String,
   size: Array,
-  imageType: String,
   description: String,
   slug: {
     type: String,

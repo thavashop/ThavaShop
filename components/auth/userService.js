@@ -70,6 +70,7 @@ exports.activate = async (username, activationString) => {
 
 exports.edit = async (id, changes) => {
     try {
+        // changes.status = 'inactivated'
         return await userModel.findOneAndUpdate({
             _id: id
         }, changes, {

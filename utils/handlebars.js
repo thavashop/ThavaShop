@@ -14,6 +14,7 @@ const helpers = {
     return (price * quantity).toFixed(2);
   },
   equals(a, b) {return (a === b)},
+  index(arr, i) {return arr[i]},
 };
 
 module.exports.helpers = helpers;
