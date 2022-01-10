@@ -35,13 +35,19 @@ exports.register = async (req, res) => {
     if (password == passwordConfirm) {
         const checkExists = await userService.checkExists(username);
         if (checkExists.length != 0) {
-            res.redirect('/login?username-exist')
+            const data = { 'message': 'Username already exists'}
+            res.status(200).json(data)
         } else {
             const user = await userService.register(username, email, password);
-            res.render('auth/views/activate.hbs', { email });
+            const data = {
+                'message': 'Success',
+                'url': `${process.env.DOMAIN_NAME}/register-success?email=${email}`
+            }
+            res.status(200).json(data)
         }
     } else {
-        res.redirect('/login?password-confirm-failed')
+        const data = { 'message': 'Confirm password does not match'}
+        res.status(200).json(data)
     }
 
 }

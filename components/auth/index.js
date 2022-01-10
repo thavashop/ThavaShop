@@ -9,6 +9,10 @@ router.post("/login", authController.authentication);
 
 router.get("/logout", authController.logout);
 router.post("/register", authController.register);
+router.get("/register-success", function (req, res) {
+  const { email } = req.query
+  res.render('auth/views/activate', {email})
+});
 
 router.get("/account", loggedInUserGuard, (req, res) => {
   res.render("auth/views/account");
