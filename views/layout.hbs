@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/vendor/owl.carousel/assets/owl.carousel.css">
     <link rel="stylesheet" href="/vendor/owl.carousel/assets/owl.theme.default.css">
     <!-- theme stylesheet-->
-    <link rel="stylesheet" href="/css/style.default.css" id="theme-stylesheet">
+    <link rel="stylesheet" href="/css/style.green.css" id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet" href="/css/custom.css">
     <!-- Favicon-->
@@ -44,6 +44,7 @@
               <li class="nav-item"><a href="/" class="nav-link active">Home</a></li>
               <li class="nav-item"><a href="/category" class="nav-link active">Category</a></li>
               <li class="nav-item"><a href="/account" class="nav-link active">Account</a></li>
+              <li class="nav-item"><a href="/order" class="nav-link active">Order</a></li>
               <li class="nav-item"><a href="/text" class="nav-link active">About us</a></li>
             </ul>
             <div class="navbar-buttons d-flex justify-content-end">
@@ -55,18 +56,18 @@
               <div id="signin-btn" class="navbar-collapse collapse d-none d-lg-block"><a href="/login"><span>Sign in</span></a></div>
               {{/if}}
               <div id="search-not-mobile" class="navbar-collapse collapse"></div><a data-toggle="collapse" href="#search" class="btn navbar-btn btn-primary d-none d-lg-inline-block"><span class="sr-only">Toggle search</span><i class="fa fa-search"></i></a>
-              <div id="basket-overview" class="navbar-collapse collapse d-none d-lg-block"><a href="/basket" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span>3 items in cart</span></a></div>
+              <div id="basket-overview" class="navbar-collapse collapse d-none d-lg-block"><a href="/cart" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span>{{user.cartLength}}</span></a></div>
             </div>
           </div>
         </div>
       </nav>
       <div id="search" class="collapse">
         <div class="container">
-          <form role="search" class="ml-auto">
+          <form role="search" class="ml-auto" method="get" action="/category">
             <div class="input-group">
-              <input type="text" placeholder="Search" class="form-control">
+              <input type="text" placeholder="Search" class="form-control" name="search">
               <div class="input-group-append">
-                <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
               </div>
             </div>
           </form>
@@ -136,11 +137,15 @@
       </div>
       <!-- /.container-->
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js" integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/vendor/jquery.cookie/jquery.cookie.js"> </script>
     <script src="/vendor/owl.carousel/owl.carousel.min.js"></script>
     <script src="/vendor/owl.carousel2.thumbs/owl.carousel2.thumbs.js"></script>
     <script src="/js/front.js"></script>
+    <script src="/js/category.js"></script>
+    <script src="/js/cart.js"></script>
+    <script src="/js/comment.js"></script>
   </body>
 </html>

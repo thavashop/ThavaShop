@@ -11,3 +11,17 @@
     margin-left: 10px;
     color: rgb(79, 191, 168);
 }
+
+#navigation .nav-link{
+    color: white;
+}
+
+#hot .img-fluid {
+    width: 250px;
+    height: 300px;
+}
+
+.row.same-height-row .img-fluid {
+    width: 250px;
+    height: 350px;
+}

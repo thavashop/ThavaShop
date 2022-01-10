@@ -1,9 +1,52 @@
-    const Product = require("../../models/Product")
+const Product = require("../../models/Product");
+const Comment = require("../../models/Comment");
 
-exports.list = () => Product.find({})
+exports.filter = function (sortBy, type, filter) {
+  return Product.find(filter)
+    .sort({ [sortBy]: type })
+    .lean();
+};
 
-exports.productByID = (id) => Product.findOne({ _id: id })
+exports.list = () => Product.find({}).lean();
 
-exports.count = () => Product.count({}).exec()
+exports.getProductsByIds = (ids) =>
+  Product.find({
+    _id: {
+      $in: ids,
+    },
+  }).lean();
 
-exports.findByPage = (page, itemPerPage) => Product.find({}).skip(page * itemPerPage).limit(itemPerPage)
+exports.productByID = (id) =>
+  Product.findOne({
+    _id: id,
+  }).lean();
+
+exports.count = () => Product.count({}).exec();
+
+exports.findByPage = (page, itemPerPage) =>
+  Product.find({})
+    .skip(page * itemPerPage)
+    .limit(itemPerPage);
+
+exports.productBySlug = (slug) =>
+  Product.findOne({
+    slug: slug,
+  }).lean();
+
+exports.top = (n) => Product.find({}).sort({ sales: "desc" }).limit(n).lean();
+
+exports.postComment = (name, productId, content) => {
+  return new Comment({
+    name: name,
+    productId: productId,
+    content: content,
+    createAt: new Date(),
+  }).save();
+};
+
+exports.getProductComment = (productId) =>
+  Comment.find({ productId: productId }).lean();
+
+exports.searchByName = (name) => Product.find({ "name": { "$regex": name, "$options": "i" } })
+
+exports.getRelatedProducts = (brand, id) => Product.find({brand: brand, _id: {"$ne": id}}).limit(4).lean()

@@ -1,39 +1,36 @@
 var express = require('express');
 var router = express.Router();
-const mongoose = require('mongoose')
-// const User = require('../models/User') // Tested ok!
-// const OrderDetails = require('../models/OrderDetails') // Tested ok!
-// const Order = require('../models/Order') // Tested ok!
-const Product = require('../models/Product') // Tested ok!
+const productService = require('../components/products/productService')
 // const loggedInUserGuard = require('../middlewares/loggedInUserGuard')
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index');
+router.get('/', async function (req, res, next) {
+  const topProduct = await productService.top(7);
+  res.render('index', {topProduct});
 });
 
 router.get('/basket', function(req, res, next) {
-  res.render('basket');  
+  res.render('basket');
 });
 
 router.get('/contact', function(req, res, next) {
-  res.render('contact');  
+  res.render('contact');
 });
 
 router.get('/detail', function(req, res, next) {
-  res.render('detail');  
+  res.render('detail');
 });
 
 // router.get('/register', function(req, res, next) {
-//   res.render('./auth/views/login');  
+//   res.render('./auth/views/login');
 // });
 
 // router.get('/login', function(req, res, next) {
-//   res.render('./auth/views/login');  
+//   res.render('./auth/views/login');
 // });
 
 router.get('/text', function(req, res, next) {
-  res.render('text');  
+  res.render('text');
 });
 
 

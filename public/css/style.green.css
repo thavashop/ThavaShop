@@ -1,10 +1,10 @@
-/* 
-========================================= 
-========================================= 
+/*
+=========================================
+=========================================
 
    Bootstrapious Boilerplate Template
 
-========================================= 
+=========================================
 ========================================= */
 /*
 *
@@ -984,7 +984,7 @@ h1 {
 }
 
 #content #checkout .table tbody tr td input, #content #basket .table tbody tr td input, #content #customer-order .table tbody tr td input {
-  width: 50px;
+  width: 60px;
   text-align: right;
 }
 

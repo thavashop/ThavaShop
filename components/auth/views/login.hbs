@@ -19,17 +19,29 @@
                 {{!-- <p class="text-muted">If you have any questions, please feel free to <a href="contact.html">contact us</a>, our customer service center is working for you 24/7.</p> --}}
                 <hr>
                 <form action="/register" method="post">
+                {{#if usernameExist}}
+                <div style="color: red;">Username already exists</div>
+                <br>
+                {{/if}}
+                {{#if passwordConfirmFailed}}
+                <div style="color: red;">Confirm password does not match</div>
+                <br>
+                {{/if}}
                   <div class="form-group">
                     <label for="name">Email</label>
-                    <input id="name" type="text" class="form-control" name="email">
+                    <input id="name" type="text" class="form-control" name="email" required>
                   </div>
                   <div class="form-group">
                     <label for="email">Username</label>
-                    <input id="email" type="text" class="form-control" name="username">
+                    <input id="email" type="text" class="form-control" name="username" required>
                   </div>
                   <div class="form-group">
                     <label for="password">Password</label>
-                    <input id="password" type="password" class="form-control" name="password">
+                    <input id="password" type="password" class="form-control" name="password"required>
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Confirm Password</label>
+                    <input id="password-confirm" type="password" class="form-control" name="password-confirm"required>
                   </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-user-md"></i> Register</button>
@@ -37,8 +49,9 @@
                 </form>
               </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6" id="login">
               <div class="box">
+              {{> notifications}}
                 <h1>Login</h1>
                 <p class="lead">Already our customer?</p>
                 {{!-- <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p> --}}
@@ -48,6 +61,10 @@
                 <div style="color: red;">Username or password is incorrect</div>
                 <br>
                 {{/if}}
+                {{#if email}}
+                <div style="color: green;">Check your email!</div>
+                <br>
+                {{/if}}
                   <div class="form-group">
                     <label for="email">Username</label>
                     <input id="email" type="text" class="form-control" name="username">
@@ -55,6 +72,8 @@
                   <div class="form-group">
                     <label for="password">Password</label>
                     <input id="password" type="password" class="form-control" name="password">
+                    <br>
+                    <a href="/forgot-password" >Forgot password</a>
                   </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
