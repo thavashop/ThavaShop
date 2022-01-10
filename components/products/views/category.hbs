@@ -187,7 +187,7 @@
                       <div class="input-group input-group-merge">
                         <span class="input-group-text"><img
                             src="https://img.icons8.com/material-outlined/24/000000/hanger.png" /></span>
-                        <select name="size" class="form-control">
+                        <select name="gender" class="form-control">
                           <option selected value>None</option>
                           {{#each attrsProductList.gender}}
                           <option>{{this}}</option>
@@ -202,7 +202,7 @@
                       <div class="input-group input-group-merge">
                         <span class="input-group-text"><img
                             src="https://img.icons8.com/material-outlined/24/000000/t-shirt.png" /></span>
-                        <select name="material" class="form-control">
+                        <select name="type" class="form-control">
                           <option selected value>None</option>
                           {{#each attrsProductList.types}}
                           <option>{{this}}</option>
@@ -242,10 +242,10 @@
                     <input type="hidden" name="color" value="{{this}}">
                     {{/each}}
                     {{#each searchAttr.gender}}
-                    <input type="hidden" name="size" value="{{this}}">
+                    <input type="hidden" name="gender" value="{{this}}">
                     {{/each}}
                     {{#each searchAttr.type}}
-                    <input type="hidden" name="material" value="{{this}}">
+                    <input type="hidden" name="type" value="{{this}}">
                     {{/each}}
                   {{/if}}
                   <div class="products-sort-by mt-2 mt-lg-0"><strong>Sort by</strong>
