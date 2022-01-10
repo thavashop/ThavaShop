@@ -27,14 +27,7 @@ inputNumEl.bind("input", function () {
     "$" + (self["value"] * self.getAttribute("data-price")).toFixed(2)
   );
 
-  $(".table-responsive .totalEach").each(function (index, el) {
-    total += Number($(el).text().split("$")[1]);
-  });
-
-  $(".table-responsive #total").text("$" + total.toFixed(2));
-
-  //tao muốn chơi game
-  total = 0;
+  updateUI();
 
   clearTimeout(timeout);
   timeout = setTimeout(function () {
@@ -54,18 +47,53 @@ inputNumEl.bind("input", function () {
   }, 1000);
 });
 
+function updateUI() {
+  const amountProductInCart = $(".table-responsive .totalEach").map(function (
+    index,
+    el
+  ) {
+    total += Number($(el).text().split("$")[1]);
+    return el;
+  });
+
+  $(".table-responsive #total").text("$" + total.toFixed(2));
+
+  total = 0;
+
+  $("#basket-overview")
+    .find("span")
+    .text(amountProductInCart.length ?? 0);
+}
+
 const updateCart = (productId, quantity) => {
   $.ajax({
     type: "POST",
     url: "/cart",
     data: {
       productId,
-      quantity
+      quantity,
     },
     success: function (data) {
       console.log("Post cart");
     },
     error: function (xhr, status, err) {
+      console.log(err);
+    },
+  });
+};
+
+const removeCart = (productId) => {
+  $.ajax({
+    type: "DELETE",
+    url: "/cart",
+    data: {
+      productId,
+    },
+    success: function (data) {
+      $(`.table-responsive #${productId}`).parent().remove();
+      updateUI();
+    },
+    error: function (err) {
       console.log(err);
     },
   });

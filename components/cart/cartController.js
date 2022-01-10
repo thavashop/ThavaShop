@@ -126,15 +126,15 @@ exports.removeFromCart = async (req, res) => {
       productId
     );
 
-    res.cookie("cartLength", cart.products.length);
+    res.cookie("cartLength", cart.products?.length);
   } else {
     const cart = req.cookies?.cart.filter(
       (item) => item.productId.toString() !== productId.toString()
     );
     res.cookie("cart", cart);
-    res.cookie("cartLength", cart.products.length);
+    res.cookie("cartLength", cart.products?.length);
   }
-  res.redirect("/cart");
+  res.status(200).json({ productId });
 };
 
 exports.checkout = async (req, res) => {
@@ -150,7 +150,7 @@ exports.checkout = async (req, res) => {
     if (cart.products == null) {
       req.flash('error', 'You do not have anything in cart to checkout')
       return res.redirect("/cart")
-    }  
+    }
   }
   res.redirect('/order/checkout/address')
 }

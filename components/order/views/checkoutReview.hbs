@@ -30,7 +30,7 @@
                     <tbody>
                       {{#each entries}}
                       <tr>
-                        <td><a href="/category/product/{{slug}}"><img src="{{image}}" alt="Product image"></a></td>
+                        <td><a href="/category/product/{{slug}}"><img src="{{image.[0]}}" alt="Product image"></a></td>
                         <td><a href="/category/product/{{slug}}">{{name}}</a></td>
                         <td>{{quantity}}</td>
                         <td>${{price}}</td>
