@@ -59,8 +59,8 @@
                     <td>{{date}}</td>
                     <td>{{delivery}}</td>
                     <td>${{subtotal}}</td>
-                    <td><span class={{#if (equals status 'delivered' )}}"badge badge-success" {{else}} {{#if (equals
-                        status 'not delivered' )}}"badge badge-warning" {{else}}"badge badge-info"{{/if}}
+                    <td><span class={{#if (equals status 'Delivered' )}}"badge badge-success" {{else}} {{#if (equals
+                        status 'Not delivered' )}}"badge badge-warning" {{else}}"badge badge-info"{{/if}}
                         {{/if}}>{{status}}</span></td>
                     <td>{{paymentType}}</td>
                     <td><a href="/order/{{_id}}" class="btn btn-primary btn-sm">View</a></td>

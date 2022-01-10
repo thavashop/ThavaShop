@@ -2,7 +2,7 @@ const Product = require("../../models/Product");
 const Comment = require("../../models/Comment");
 
 exports.filter = function (sortBy, type, filter) {
-  return Product.find(filter)
+  return Product.find(filter, {'image': {$slice: 2}})
     .sort({ [sortBy]: type })
     .lean();
 };

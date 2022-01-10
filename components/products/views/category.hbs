@@ -224,14 +224,14 @@
               <div class="product">
                 <div class="flip-container">
                   <div class="flipper">
-                    <div class="front "><a href="/category/product/{{slug}}"><img src="{{image}}" alt=""
+                    <div class="front "><a href="/category/product/{{slug}}"><img src="{{index image 0}}" alt=""
                           class="img-fluid product-img"></a>
                     </div>
-                    <div class="back "><a href="/category/product/{{slug}}"><img src="{{image2}}" alt=""
+                    <div class="back "><a href="/category/product/{{slug}}"><img src="{{index image 1}}" alt=""
                           class="img-fluid product-img"></a>
                     </div>
                   </div>
-                </div><a href="/category/product/{{slug}}" class="invisible"><img src="{{image}}" alt=""
+                </div><a href="/category/product/{{slug}}" class="invisible"><img src="{{index image 0}}" alt=""
                     class="img-fluid product-img"></a>
                 <div class="text">
                   <h3><a href="/category/product/{{slug}}">{{name}}</a></h3>
@@ -241,7 +241,7 @@
                   <p class="buttons"><a href="/category/product/{{slug}}" class="btn btn-outline-secondary">View
                       detail</a>
                   <form action="/cart" method="post" class="row justify-content-center">
-                    <button class="btn btn-primary" type="submit"><i class="fa fa-shopping-cart"></i>Add to
+                    <button class="btn btn-primary mb-3" type="submit"><i class="fa fa-shopping-cart"></i>Add to
                       Cart</button>
                     <input type="hidden" name="productId" value="{{_id}}">
                   </form>
