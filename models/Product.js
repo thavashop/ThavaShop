@@ -11,8 +11,7 @@ const schema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  image: String,
-  image2: String,
+  image: Array,
   material: String,
   care: String,
   brand: String,
@@ -27,7 +26,9 @@ const schema = mongoose.Schema({
   sales: {
     type: Number,
     default: 0
-}
+  },
+  gender: String,
+  type: String,
 });
 
 module.exports = mongoose.model("Product", schema, "product");

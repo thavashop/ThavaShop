@@ -14,8 +14,6 @@ exports.login = (req, res) => {
     const passwordConfirmFailed = req.query['password-confirm-failed'] !== undefined;
     res.render('auth/views/login', {
         wrongPassword,
-        usernameExist,
-        passwordConfirmFailed,
     });
 }
 

@@ -2,27 +2,27 @@ const { everySize: productSize } = require("../../models/Product");
 const productService = require("./productService");
 
 exports.category = async function (req, res) {
-  let { page, sortBy, brand, color, size, material, search } = req.query;
+  let { page, sortBy, brand, color, type, gender, search } = req.query;
   if (!page) page = 1;
 
   let filter = {
     ...(brand ? { brand } : {}),
     ...(color ? { color } : {}),
-    ...(size ? { size } : {}),
-    ...(material ? { material } : {}),
+    ...(type ? { type } : {}),
+    ...(gender ? { gender } : {}),
   };
 
 
-  let field, type
+  let field, typeSort
   if (sortBy) {
     const sortValue = sortBy.split('_')
     field = sortValue[0]
-    type = sortValue[1]
+    typeSort = sortValue[1]
   }
 
   let products = await productService.filter(
     field,
-    type,
+    typeSort,
     filter
   );
 
@@ -38,8 +38,8 @@ exports.category = async function (req, res) {
   const attrsProductList = {
     colors: [...new Set(allProducts.map((product) => product.color))],
     brands: [...new Set(allProducts.map((product) => product.brand))],
-    sizes: productSize,
-    materials: [...new Set(allProducts.map((product) => product.material))],
+    gender: [...new Set(allProducts.map((product) => product.gender))],
+    types: [...new Set(allProducts.map((product) => product.type))],
   };
   // page bar
   const pageIndex = Math.floor((page - 1) / 5) * 5 + 1;
@@ -78,15 +78,15 @@ exports.category = async function (req, res) {
 
   const brandAttr = Array.isArray(brand) ? brand : [brand]
   const colorAttr = Array.isArray(color) ? color : [color]
-  const sizeAttr = Array.isArray(size) ? size : [size]
-  const materialAttr = Array.isArray(material) ? material : [material]
+  const genderAttr = Array.isArray(gender) ? gender : [gender]
+  const typeAttr = Array.isArray(type) ? type : [type]
 
   let searchAttr = {
     'search': search? [search] : [],
     'brand': brandAttr ? [...brandAttr] : [] ,
     'color': colorAttr ? [...colorAttr] : [] ,
-    'size': sizeAttr ? [...sizeAttr] : [] ,
-    'material': materialAttr ? [...materialAttr] : [] ,
+    'gender': genderAttr ? [...genderAttr] : [] ,
+    'type': typeAttr ? [...typeAttr] : [] ,
   };
 
   res.render("products/views/category.hbs", {
