@@ -29,7 +29,7 @@
                       <tbody>
                         {{#each products}}
                           <tr>
-                          <td><a href="/category/product/{{productId.slug}}"><img src="{{productId.image}}" alt="{{productId.name}}"></a></td>
+                          <td><a href="/category/product/{{productId.slug}}"><img src="{{productId.image.[0]}}" alt="{{productId.name}}"></a></td>
                           <td><a href="/category/product/{{productId.slug}}">{{productId.name}}</a></td>
                           <td>
                             <input type="number" data-id="{{productId._id}}" data-quantity="{{quantity}}" data-price="{{productId.price}}" min="1" value="{{quantity}}" class="form-control">
@@ -37,10 +37,7 @@
                           <td>${{productId.price}}</td>
                           <td id="{{productId._id}}" class="totalEach">${{calcTotal productId.price quantity}}</td>
                           <td>
-                            <form action="/cart/remove" method="post">
-                              <button class="btn" type="submit"><i class="fa fa-trash-o"></i></button>
-                              <input type="hidden" name="productId" value="{{productId._id}}">
-                            </form>
+                            <button class="btn" type="button" onclick="removeCart(`{{productId._id}}`)"><i class="fa fa-trash-o"></i></button>
                           </td>
                         </tr>
                         {{/each}}
