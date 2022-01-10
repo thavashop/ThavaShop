@@ -192,6 +192,9 @@
                       href="#" class="btn btn-outline-secondary btn-sm">All</a><span>products</span>
                   </div> --}}
                   {{#if searchAttr}}
+                  {{#each searchAttr.search}}
+                    <input type="hidden" name="search" value="{{this}}">
+                    {{/each}}
                     {{#each searchAttr.brand}}
                     <input type="hidden" name="brand" value="{{this}}">
                     {{/each}}

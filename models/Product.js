@@ -22,7 +22,7 @@ const schema = mongoose.Schema({
   description: String,
   slug: {
     type: String,
-    slug: 'name',
+    slug: "name",
   },
   sales: {
     type: Number,

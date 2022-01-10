@@ -82,6 +82,7 @@ exports.category = async function (req, res) {
   const materialAttr = Array.isArray(material) ? material : [material]
 
   let searchAttr = {
+    'search': search? [search] : [],
     'brand': brandAttr ? [...brandAttr] : [] ,
     'color': colorAttr ? [...colorAttr] : [] ,
     'size': sizeAttr ? [...sizeAttr] : [] ,
