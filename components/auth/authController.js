@@ -194,24 +194,29 @@ exports.resendEmail = async (req, res) => {
 exports.sendMailForgotPassword = async (req, res) => {
   const { username } = req.body;
   const user = await userService.findByUsername(username);
-  const msg = {
-    to: user.email, // Change to your recipient
-    from: process.env.EMAIL_SENDER, // Change to your verified sender
-    subject: "ThavaShop account email activation",
-    html: `<h1>Thanks for register your account with ThavaShop</h1>
-        <p>Please activate your account <a
-        href="${process.env.DOMAIN_NAME}/reset-password?username=${user.username}&activation-string=${user.activationString}"
-        >Click here!</a></p>`,
-  };
-  mailTransporter.sendMail(msg, function (err, data) {
-    if (err) {
-      console.log(err.message);
-    } else {
-      console.log("Email sent successfully");
-    }
-  });
-  const email = true;
-  res.render("auth/views/login", { email });
+  if (user) {
+    const msg = {
+      to: user.email, // Change to your recipient
+      from: process.env.EMAIL_SENDER, // Change to your verified sender
+      subject: "ThavaShop account email for reset password",
+      html: `<h1>Reset your password</h1>
+          <p>Please <a
+          href="${process.env.DOMAIN_NAME}/reset-password?username=${user.username}&activation-string=${user.activationString}"
+          >Click here!</a></p>`,
+    };
+    mailTransporter.sendMail(msg, function (err, data) {
+      if (err) {
+        console.log(err.message);
+      } else {
+        console.log("Email sent successfully");
+      }
+    });
+    const email = true;
+    res.render("auth/views/login", { email });
+  } else {
+    const message = "Username does not exist";
+    res.render("auth/views/forgotPassword", { message });
+  }
 };
 
 exports.resetPassword = async (req, res) => {
@@ -224,6 +229,7 @@ exports.resetPassword = async (req, res) => {
   if (user) {
     req.login(user, function (err) {
       if (err) return next(err);
+      res.clearCookie("cart");
       const { username } = user;
       return res.render("auth/views/updatePassword", { username });
     });
